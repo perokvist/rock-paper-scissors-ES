@@ -4,8 +4,14 @@ namespace ES.Lab.Commands
 {
     public class JoinGameCommand : ICommand
     {
-        public Guid PlayerId { get; set; }
+        public JoinGameCommand(Guid entityId, Guid playerId)
+        {
+            PlayerId = playerId;
+            EntityId = entityId;
+        }
 
-        public Guid EntityId { get; set; }
+        public Guid PlayerId { get; private set; }
+        public Guid EntityId { get; private set; }
+
     }
 }

@@ -23,7 +23,7 @@ namespace ES.Lab.IntegrationTests
             var store = A.Fake<IEventStore>();
             var appservice = new ApplicationService<Game>(store);
             //Act
-            appservice.Handle(new CreateGameCommand());
+            appservice.Handle(new CreateGameCommand(Guid.NewGuid(), Guid.NewGuid(), "test", 3));
 
             //Assert
             store.CallsTo(s => s.Store(Guid.NewGuid(), 0, null))
@@ -40,7 +40,7 @@ namespace ES.Lab.IntegrationTests
             var appservice = new ApplicationService<Game>(store);
 
             //Act
-            appservice.Handle(new CreateGameCommand());
+            appservice.Handle(new CreateGameCommand(Guid.NewGuid(), Guid.NewGuid(), "test", 2));
 
             //Assert
             fakeDetails.CallsTo(gd => gd.Handle((GameCreatedEvent)null))
@@ -57,8 +57,8 @@ namespace ES.Lab.IntegrationTests
             var appservice = new ApplicationService<Game>(store);
 
             //Act
-            appservice.Handle(new CreateGameCommand());
-            appservice.Handle(new JoinGameCommand());
+            appservice.Handle(new CreateGameCommand(Guid.NewGuid(), Guid.NewGuid(), "test", 1));
+            appservice.Handle(new JoinGameCommand(Guid.NewGuid(), Guid.NewGuid()));
 
             //Assert
             fakeDetails.CallsTo(gd => gd.Handle((GameStartedEvent)null))

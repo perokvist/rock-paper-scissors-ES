@@ -10,5 +10,9 @@ namespace ES.Lab.Domain
         }
 
         public string Email { get; set; }
+
+        public Choice CurrentChoice { get; set; }
+
+        public decimal Score { get; set; }
     }
 }
