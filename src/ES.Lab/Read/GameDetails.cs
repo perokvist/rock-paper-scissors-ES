@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ES.Lab.Read
 {
@@ -14,5 +15,17 @@ namespace ES.Lab.Read
         public Guid GameId { get; set; }
         public Guid PlayerId { get; set; }
 
+        public IList<Round> Rounds { get; set; }
+
+        public string PlayerOneId { get; set; }
+
+        public string PlayerTwoId { get; set; }
+
+        public string WinnerId { get; set; }
+
+        public void AddRound(Round round)
+        {
+            Rounds.Add(round);
+        }
     }
 }

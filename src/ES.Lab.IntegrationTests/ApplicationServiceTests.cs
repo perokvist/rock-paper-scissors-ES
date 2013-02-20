@@ -58,7 +58,7 @@ namespace ES.Lab.IntegrationTests
 
             //Act
             appservice.Handle(new CreateGameCommand(Guid.NewGuid(), Guid.NewGuid(), "test", 1));
-            appservice.Handle(new JoinGameCommand(Guid.NewGuid(), Guid.NewGuid()));
+            appservice.Handle(new JoinGameCommand(Guid.NewGuid(), "tester@hotmail.com"));
 
             //Assert
             fakeDetails.CallsTo(gd => gd.Handle((GameStartedEvent)null))

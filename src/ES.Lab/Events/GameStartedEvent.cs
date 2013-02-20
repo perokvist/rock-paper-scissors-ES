@@ -4,16 +4,16 @@ namespace ES.Lab.Events
 {
     public class GameStartedEvent : IEvent
     {
-        public GameStartedEvent(Guid gameId, string email, Guid playerId)
+        public GameStartedEvent(Guid gameId, string playerOneId, string playerTwoId)
         {
             GameId = gameId;
-            Email = email;
-            PlayerId = playerId;
+            PlayerOneId = playerOneId;
+            PlayerTwoId = playerTwoId;
         }
 
         public Guid GameId { get; private set; }
-        public string Email { get; private set; }
-        public Guid PlayerId { get; private set; }
+        public string PlayerOneId { get; private set; }
+        public string PlayerTwoId { get; private set; }
 
     }
 }

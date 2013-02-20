@@ -69,6 +69,7 @@
     <Compile Include="Read\GameDetails.cs" />
     <Compile Include="Read\GameDetailsDenormalizer.cs" />
     <Compile Include="Read\IProjection.cs" />
+    <Compile Include="Read\Round.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
