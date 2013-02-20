@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ES.Lab.Read
 {
-    public class OpenGamesDenormalizer : IProjection
+    public class OpenGamesDenormalizer : IgnoreNonApplicableEvents, IProjection
     {
         private readonly IDictionary<Guid, OpenGame> _openGames;
 
@@ -14,12 +14,12 @@ namespace ES.Lab.Read
             _openGames = new ConcurrentDictionary<Guid, OpenGame>();
         }
     
-        public void Handle(GameCreatedEvent @event)
+        public virtual void Handle(GameCreatedEvent @event)
         {
             _openGames.Add(@event.GameId, new OpenGame(@event.GameId, @event.PlayerId, @event.Created, @event.FirstTo));
         }
 
-        public void Handle(GameStartedEvent @event)
+        public virtual void Handle(GameStartedEvent @event)
         {
             _openGames.Remove(@event.GameId);
         }
@@ -28,6 +28,10 @@ namespace ES.Lab.Read
         {
             return _openGames.Values;
         }
-
+        
+        void IProjection.When(IEvent @event)
+        {
+            this.Handle((dynamic)@event);
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using ES.Lab.Events;
 namespace ES.Lab.Read
 {
-    public class GameDetailsDenormalizer : IProjection
+    public class GameDetailsDenormalizer : IgnoreNonApplicableEvents, IProjection
     {
         private readonly IDictionary<Guid, GameDetails> _gameDetails;
 
@@ -60,6 +60,11 @@ namespace ES.Lab.Read
         public IEnumerable<GameDetails> AllGameDetails()
         {
             return _gameDetails.Values;
+        }
+
+        void IProjection.When(IEvent @event)
+        {
+            this.Handle((dynamic)@event);
         }
     }
 }

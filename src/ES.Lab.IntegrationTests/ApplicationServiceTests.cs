@@ -52,13 +52,15 @@ namespace ES.Lab.IntegrationTests
         {
             //Arrange
             var fakeDetails = A.Fake<GameDetailsDenormalizer>();
-            var eventListener = new EventListner(new List<IProjection> { fakeDetails });
+            var fakeOpenGames = A.Fake<OpenGamesDenormalizer>();
+            var eventListener = new EventListner(new List<IProjection> { fakeDetails, fakeOpenGames });
             var store = new DelegatingEventStore(new InMemoryEventStore(), new List<IEventListner> { eventListener });
             var appservice = new ApplicationService<Game>(store);
 
             //Act
-            appservice.Handle(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 1));
-            appservice.Handle(new JoinGameCommand(Guid.NewGuid(), "tester@hotmail.com"));
+            var id = Guid.NewGuid();
+            appservice.Handle(new CreateGameCommand(id, string.Empty, "test", 1));
+            appservice.Handle(new JoinGameCommand(id, "tester@hotmail.com"));
 
             //Assert
             fakeDetails.CallsTo(gd => gd.Handle((GameStartedEvent)null))

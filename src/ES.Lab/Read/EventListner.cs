@@ -14,7 +14,7 @@ namespace ES.Lab.Read
 
         public void Receive(IEnumerable<IEvent> events)
         {
-            _listerners.ForEach(l => events.ForEach(e => ((dynamic)l).Handle((dynamic)e)));
+            _listerners.ForEach(l => events.ForEach(l.When));
         }
     }
 }

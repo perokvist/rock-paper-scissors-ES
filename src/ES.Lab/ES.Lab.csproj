@@ -68,6 +68,7 @@
     <Compile Include="Read\EventListner.cs" />
     <Compile Include="Read\GameDetails.cs" />
     <Compile Include="Read\GameDetailsDenormalizer.cs" />
+    <Compile Include="Read\IgnoreNonApplicableEvents.cs" />
     <Compile Include="Read\IProjection.cs" />
     <Compile Include="Read\OpenGame.cs" />
     <Compile Include="Read\OpenGamesDenormalizer.cs" />
