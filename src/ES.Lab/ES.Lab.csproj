@@ -41,8 +41,11 @@
   <ItemGroup>
     <Compile Include="Domain\Choice.cs" />
     <Compile Include="Commands\MakeChoiceCommand.cs" />
-    <Compile Include="Domain\ChoiceMadeEvent.cs" />
+    <Compile Include="Events\ChoiceMadeEvent.cs" />
     <Compile Include="Domain\GameState.cs" />
+    <Compile Include="Events\GameWonEvent.cs" />
+    <Compile Include="Events\RoundTiedEvent.cs" />
+    <Compile Include="Events\RoundWonEvent.cs" />
     <Compile Include="Events\GameStartedEvent.cs" />
     <Compile Include="Commands\JoinGameCommand.cs" />
     <Compile Include="Events\RoundStartedEvent.cs" />

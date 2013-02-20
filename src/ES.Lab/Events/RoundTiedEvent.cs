@@ -2,9 +2,9 @@ using System;
 
 namespace ES.Lab.Events
 {
-    public class RoundStartedEvent : IEvent
+    public class RoundTiedEvent : IEvent
     {
-        public RoundStartedEvent(Guid gameId, int round)
+        public RoundTiedEvent(Guid gameId, int round)
         {
             GameId = gameId;
             Round = round;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using ES.Lab;
 using ES.Lab.Commands;
 using ES.Lab.Events;
 
@@ -12,6 +11,7 @@ namespace ES.Lab.Domain
         private readonly IDictionary<Choice, Choice> winnersAgainst;
         private Guid id;
         private string title;
+        private string winner;
         private GamePlayer playerOne;
         private GamePlayer playerTwo;
         private int firstTo;
@@ -59,18 +59,12 @@ namespace ES.Lab.Domain
             var playerTwoChoice = playerTwo.CurrentChoice;
 
             if (state != GameState.Started)
-            {
                 return events;
-            }
 
             if (IsPlayerOne(command.PlayerId) && playerOneChoice == Choice.None)
-            {
                 playerOneChoice = PlayerChoice(command, events);
-            }
             else if (IsPlayerTwo(command.PlayerId) && playerTwoChoice == Choice.None)
-            {
                 playerTwoChoice = PlayerChoice(command, events);
-            }
 
             // Decide winner if both has chosen
             if (playerOneChoice != Choice.None && playerTwoChoice != Choice.None)
@@ -80,32 +74,62 @@ namespace ES.Lab.Domain
                 Choice winsAgainstOne = winnersAgainst[playerOne.CurrentChoice];
 
                 if (playerTwoChoice == winsAgainstOne)
-                {
                     newRound = RoundWonBy(playerTwo, command, events);
-                }
                 else if (playerOneChoice == playerTwo.CurrentChoice)
-                {
                     events.Add(new RoundTiedEvent(command.EntityId, round));
-                }
                 else
-                {
                     newRound = RoundWonBy(playerOne, command, events);
-                }
 
                 if (newRound)
-                {
                     events.Add(new RoundStartedEvent(command.EntityId, round + 1));
-                }
             }
             return events;
         }
+
+        public void Handle(GameCreatedEvent @event)
+        {
+            id = @event.GameId;
+            title = @event.Title;
+            playerOne = new GamePlayer(@event.PlayerId);
+            firstTo = @event.FirstTo;
+        }
+
+        public void Handle(ChoiceMadeEvent @event)
+        {
+            if(IsPlayerOne(@event.PlayerId))
+                playerOne.CurrentChoice = @event.Choice;
+            else if(IsPlayerTwo(@event.PlayerId))
+                playerTwo.CurrentChoice = @event.Choice;
+        }
+
+        public void Handle(RoundStartedEvent @event)
+        {
+            round = @event.Round;
+            playerOne.CurrentChoice = Choice.None;
+            playerTwo.CurrentChoice = Choice.None;
+        }
+
+        public void Handle(RoundWonEvent @event)
+        {
+            if(IsPlayerOne(@event.PlayerId))
+                playerOne.AddWin();
+            else if(IsPlayerTwo(@event.PlayerId))
+                playerTwo.AddWin();
+        }
+
+        public void Handle(GameWonEvent @event)
+        {
+            state = GameState.Finished;
+            winner = @event.PlayerId;
+        }
+
 
         private bool IsWinner(GamePlayer player)
         {
             return (player.Score + 1) >= firstTo;
         }
 
-        private void GameWonBy(GamePlayer player,MakeChoiceCommand command, List<IEvent> events)
+        private void GameWonBy(GamePlayer player, MakeChoiceCommand command, List<IEvent> events)
         {
             events.Add(new GameWonEvent(command.EntityId, player.Email));
         }
@@ -132,14 +156,7 @@ namespace ES.Lab.Domain
             return playerChoice;
         }
         
-        public void Handle(GameCreatedEvent @event)
-        {
-            this.id = @event.GameId;
-            this.title = @event.Title;
-            this.playerOne = new GamePlayer(@event.PlayerId);
-            this.firstTo = @event.FirstTo;
-        }
-
+        
         private bool IsPlayerOne(String email)
         {
             return email == playerOne.Email;
@@ -152,27 +169,3 @@ namespace ES.Lab.Domain
 
     }
 }
-
-    public class RoundTiedEvent : IEvent
-    {
-        public RoundTiedEvent(Guid entityId, int round)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class GameWonEvent : IEvent
-    {
-        public GameWonEvent(Guid entityId, string email)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class RoundWonEvent : IEvent
-    {
-        public RoundWonEvent(Guid entityId, string email, int round)
-        {
-            throw new NotImplementedException();
-        }
-    }

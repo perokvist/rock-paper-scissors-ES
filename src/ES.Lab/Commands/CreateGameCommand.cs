@@ -13,11 +13,8 @@ namespace ES.Lab.Commands
         }
 
         public Guid EntityId { get; private set; }
-
         public Guid PlayerId { get; private set; }
-
         public string Title { get; private set; }
-
         public int FirstTo { get; private set; }
         
     }

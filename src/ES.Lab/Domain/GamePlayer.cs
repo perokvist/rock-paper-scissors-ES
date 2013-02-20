@@ -14,5 +14,10 @@ namespace ES.Lab.Domain
         public Choice CurrentChoice { get; set; }
 
         public decimal Score { get; set; }
+
+        public void AddWin()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
