@@ -6,14 +6,13 @@ namespace ES.Lab.Read
     public class GameDetails
     {
         
-        public GameDetails(Guid gameId, Guid playerId)
+        public GameDetails(Guid gameId, string playerOneId)
         {
             GameId = gameId;
-            PlayerId = playerId;
+            PlayerOneId = playerOneId;
         }
 
         public Guid GameId { get; set; }
-        public Guid PlayerId { get; set; }
 
         public IList<Round> Rounds { get; set; }
 

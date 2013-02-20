@@ -4,9 +4,9 @@ namespace ES.Lab.Domain
 {
     class GamePlayer
     {
-        public GamePlayer(Guid playerId)
+        public GamePlayer(string email)
         {
-
+            Email = email;
         }
 
         public string Email { get; set; }
