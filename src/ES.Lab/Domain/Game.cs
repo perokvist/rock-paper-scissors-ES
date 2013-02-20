@@ -63,28 +63,17 @@ namespace ES.Lab.Domain
                 return events;
             }
 
-            if (IsPlayerOne(command.PlayerId) && playerOneChoice == null)
+            if (IsPlayerOne(command.PlayerId) && playerOneChoice == Choice.None)
             {
-
-                events.Add(new ChoiceMadeEvent(
-                               command.EntityId,
-                               this.round,
-                               command.PlayerId,
-                               command.Choice));
-                playerOneChoice = command.Choice;
+                playerOneChoice = PlayerChoice(command, events);
             }
-            else if (IsPlayerTwo(command.PlayerId) && playerTwoChoice == null)
+            else if (IsPlayerTwo(command.PlayerId) && playerTwoChoice == Choice.None)
             {
-                events.Add(new ChoiceMadeEvent(
-                               command.EntityId,
-                               round,
-                               command.PlayerId,
-                               command.Choice));
-                playerTwoChoice = command.Choice;
+                playerTwoChoice = PlayerChoice(command, events);
             }
 
             // Decide winner if both has chosen
-            if (playerOneChoice != null && playerTwoChoice != null)
+            if (playerOneChoice != Choice.None && playerTwoChoice != Choice.None)
             {
                 // decide round
                 var newRound = true;
@@ -92,12 +81,7 @@ namespace ES.Lab.Domain
 
                 if (playerTwoChoice == winsAgainstOne)
                 {
-                    events.Add(new RoundWonEvent(command.EntityId, playerTwo.Email, round));
-                    if ((playerTwo.Score + 1) >= firstTo)
-                    {
-                        events.Add(new GameWonEvent(command.EntityId, playerTwo.Email));
-                        newRound = false;
-                    }
+                    newRound = RoundWonBy(playerTwo, command, events);
                 }
                 else if (playerOneChoice == playerTwo.CurrentChoice)
                 {
@@ -105,13 +89,7 @@ namespace ES.Lab.Domain
                 }
                 else
                 {
-                    events.Add(new RoundWonEvent(command.EntityId, playerOne.Email, round));
-
-                    if ((playerOne.Score + 1) >= firstTo)
-                    {
-                        events.Add(new GameWonEvent(command.EntityId, playerOne.Email));
-                        newRound = false;
-                    }
+                    newRound = RoundWonBy(playerOne, command, events);
                 }
 
                 if (newRound)
@@ -122,6 +100,38 @@ namespace ES.Lab.Domain
             return events;
         }
 
+        private bool IsWinner(GamePlayer player)
+        {
+            return (player.Score + 1) >= firstTo;
+        }
+
+        private void GameWonBy(GamePlayer player,MakeChoiceCommand command, List<IEvent> events)
+        {
+            events.Add(new GameWonEvent(command.EntityId, player.Email));
+        }
+
+        private bool RoundWonBy(GamePlayer player, MakeChoiceCommand command, List<IEvent> events)
+        {
+            events.Add(new RoundWonEvent(command.EntityId, player.Email, round));
+            if (IsWinner(playerTwo))
+            {
+                GameWonBy(playerTwo, command, events);
+                return false;
+            }
+            return true;
+        }
+
+        private Choice PlayerChoice(MakeChoiceCommand command, List<IEvent> events)
+        {
+            events.Add(new ChoiceMadeEvent(
+                         command.EntityId,
+                         this.round,
+                         command.PlayerId,
+                         command.Choice));
+            var playerChoice = command.Choice;
+            return playerChoice;
+        }
+        
         public void Handle(GameCreatedEvent @event)
         {
             this.id = @event.GameId;
