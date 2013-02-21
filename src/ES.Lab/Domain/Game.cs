@@ -38,7 +38,7 @@ namespace ES.Lab.Domain
                                DateTime.UtcNow)
                        };
         }
-
+        
         public IEnumerable<IEvent> Handle(JoinGameCommand command)
         {
             var events = new List<IEvent>();
@@ -96,9 +96,9 @@ namespace ES.Lab.Domain
 
         public void Handle(ChoiceMadeEvent @event)
         {
-            if(IsPlayerOne(@event.PlayerId))
+            if (IsPlayerOne(@event.PlayerId))
                 playerOne.CurrentChoice = @event.Choice;
-            else if(IsPlayerTwo(@event.PlayerId))
+            else if (IsPlayerTwo(@event.PlayerId))
                 playerTwo.CurrentChoice = @event.Choice;
         }
 
@@ -111,9 +111,9 @@ namespace ES.Lab.Domain
 
         public void Handle(RoundWonEvent @event)
         {
-            if(IsPlayerOne(@event.PlayerId))
+            if (IsPlayerOne(@event.PlayerId))
                 playerOne.AddWin();
-            else if(IsPlayerTwo(@event.PlayerId))
+            else if (IsPlayerTwo(@event.PlayerId))
                 playerTwo.AddWin();
         }
 
@@ -121,6 +121,12 @@ namespace ES.Lab.Domain
         {
             state = GameState.Finished;
             winner = @event.PlayerId;
+        }
+
+        public void Handle(GameStartedEvent @event)
+        {
+            state = GameState.Started;
+            playerTwo = new GamePlayer(@event.PlayerTwoId);
         }
 
 
@@ -155,8 +161,8 @@ namespace ES.Lab.Domain
             var playerChoice = command.Choice;
             return playerChoice;
         }
-        
-        
+
+
         private bool IsPlayerOne(String email)
         {
             return email == playerOne.Email;

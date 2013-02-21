@@ -17,7 +17,7 @@ namespace ES.Lab.Domain
 
         public void AddWin()
         {
-            throw new NotImplementedException();
+            Score += 1;
         }
     }
 }

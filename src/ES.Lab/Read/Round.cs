@@ -6,7 +6,7 @@ namespace ES.Lab.Read
     {
         public Round(int round)
         {
-            throw new NotImplementedException();
+            this.Number = round;
         }
 
         public int Number { get; set; }

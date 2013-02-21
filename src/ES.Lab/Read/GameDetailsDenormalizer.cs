@@ -38,7 +38,7 @@ namespace ES.Lab.Read
             if (!_gameDetails.ContainsKey(@event.GameId)) return;
             
             var gameDetails = _gameDetails[@event.GameId];
-            var round = gameDetails.Rounds.Single(r => r.Number == @event.Round - 1);
+            var round = gameDetails.Rounds.Single(r => r.Number == @event.Round);
             if(gameDetails.PlayerOneId == @event.PlayerId)
                 round.PlayerOneHasMadeMove = true;
             else if(gameDetails.PlayerTwoId == @event.PlayerId)

@@ -10,6 +10,7 @@ namespace ES.Lab.Read
         {
             GameId = gameId;
             PlayerOneId = playerOneId;
+            Rounds = new List<Round>();
         }
 
         public Guid GameId { get; set; }
