@@ -54,9 +54,9 @@ namespace ES.Lab.Read
 
         public GameDetails GetGameDetails(Guid gameId)
         {
-            return _gameDetails[gameId];
+            return !_gameDetails.ContainsKey(gameId) ? new GameDetails(gameId, string.Empty) : _gameDetails[gameId];
         }
-    
+
         public IEnumerable<GameDetails> AllGameDetails()
         {
             return _gameDetails.Values;

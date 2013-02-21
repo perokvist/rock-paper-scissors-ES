@@ -72,44 +72,65 @@ namespace ES.Lab.IntegrationTests
             //Arrange
             _details = A.Fake<GameDetailsDenormalizer>();
             _openGames = A.Fake<OpenGamesDenormalizer>();
-            var appservice = _appserviceFactory();
-
-            //Act
             var id = Guid.NewGuid();
-            appservice.Handle(new CreateGameCommand(id, string.Empty, "test", 1));
-            appservice.Handle(new JoinGameCommand(id, "tester@hotmail.com"));
 
-            //Assert
-            _details.CallsTo(gd => gd.Handle((GameStartedEvent)null))
-                .WithAnyArguments().MustHaveHappened(Repeated.Exactly.Once);
+            //Act, Assert
+            PlayGame(d => _details.CallsTo(gd => gd.Handle((GameStartedEvent)null)).WithAnyArguments().MustHaveHappened(Repeated.Exactly.Once),
+                new CreateGameCommand(id, string.Empty, "test", 1),
+                new JoinGameCommand(id, "tester@hotmail.com")
+                );
         }
 
         [Test]
         public void EndToEndGamePlay()
         {
             //Arrange
-            _details = new GameDetailsDenormalizer();
-            _openGames = new OpenGamesDenormalizer();
-            var id = Guid.NewGuid();
+            var gameId = Guid.NewGuid();
             var playerOne = "player1@jayway.com";
             var playerTwo = "player2@jayway.com";
+            var commands = new List<ICommand>
+                               {
+                                   new CreateGameCommand(gameId, playerOne, "test", 3),
+                                   new JoinGameCommand(gameId, playerTwo),
+                                   new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
+                                   new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors),
+                                   new MakeChoiceCommand(gameId, playerOne, Choice.Rock),
+                                   new MakeChoiceCommand(gameId, playerTwo, Choice.Paper),
+                                   new MakeChoiceCommand(gameId, playerOne, Choice.Scissors),
+                                   new MakeChoiceCommand(gameId, playerTwo, Choice.Paper)
+                               };
+            //Act, Assert
+            PlayGame(d => Assert.AreEqual(playerTwo, d.WinnerId), commands.ToArray());
+            
+        }
+
+        [Test]
+        public void DrawShouldAddRound()
+        {
+            //Arrange
+            var gameId = Guid.NewGuid();
+            var playerOne = "player1@jayway.com";
+            var playerTwo = "player2@jayway.com";
+            var commands = new List<ICommand>
+                               {
+                                   new CreateGameCommand(gameId, playerOne, "test", 3),
+                                   new JoinGameCommand(gameId, playerTwo),
+                                   new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
+                                   new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors),
+                                   new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
+                                   new MakeChoiceCommand(gameId, playerTwo, Choice.Rock),
+                                   new MakeChoiceCommand(gameId, playerOne, Choice.Scissors),
+                                   new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors)
+                               };
+            //Act, Assert
+            PlayGame(d => Assert.AreEqual(4, d.Rounds.Count()), commands.ToArray());
+        }
+
+        private void PlayGame(Action<GameDetails> assert, params ICommand[] commands)
+        {
             var appservice = _appserviceFactory();
-
-            //Act
-            appservice.Handle(new CreateGameCommand(id, playerOne, "test", 3));
-            appservice.Handle(new JoinGameCommand(id, playerTwo));
-            appservice.Handle(new MakeChoiceCommand(id, playerOne, Choice.Paper));
-            appservice.Handle(new MakeChoiceCommand(id, playerTwo, Choice.Scissors));
-            appservice.Handle(new MakeChoiceCommand(id, playerOne, Choice.Rock));
-            appservice.Handle(new MakeChoiceCommand(id, playerTwo, Choice.Paper));
-            appservice.Handle(new MakeChoiceCommand(id, playerOne, Choice.Scissors));
-            appservice.Handle(new MakeChoiceCommand(id, playerTwo, Choice.Paper));
-
-
-            var result = _details.GetGameDetails(id);
-           
-            //Assert
-            Assert.AreEqual(playerTwo, result.WinnerId);
+            commands.ForEach(appservice.Handle);
+            assert(_details.GetGameDetails(commands.First().EntityId));
         }
     }
 }
