@@ -1,4 +1,6 @@
-﻿namespace ES.Lab.Infrastructure
+﻿using ES.Lab.Commands;
+
+namespace ES.Lab.Infrastructure
 {
     public class ApplicationService<TAggregate> : IApplicationService
         where TAggregate : new()
@@ -12,6 +14,9 @@
 
         public void Handle(ICommand command)
         {
+            //TODO route commands
+            if (!(command is IGameCommand)) return;
+
             //Load events
             var eventStream = _eventStore.LoadEventStream(command.EntityId);
             //Instantiate aggregate

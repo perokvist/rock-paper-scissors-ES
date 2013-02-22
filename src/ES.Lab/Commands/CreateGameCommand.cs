@@ -2,7 +2,7 @@
 
 namespace ES.Lab.Commands
 {
-    public class CreateGameCommand : ICommand
+    public class CreateGameCommand : IGameCommand
     {
         public CreateGameCommand(Guid entityId, string playerId, string title, int firstTo)
         {

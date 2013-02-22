@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\IGameCommand.cs" />
     <Compile Include="Domain\Choice.cs" />
     <Compile Include="Commands\MakeChoiceCommand.cs" />
     <Compile Include="Events\ChoiceMadeEvent.cs" />

@@ -2,7 +2,7 @@ using System;
 
 namespace ES.Lab.Commands
 {
-    public class JoinGameCommand : ICommand
+    public class JoinGameCommand : IGameCommand
     {
         public JoinGameCommand(Guid entityId, string playerId)
         {

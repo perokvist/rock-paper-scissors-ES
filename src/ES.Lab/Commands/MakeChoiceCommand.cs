@@ -3,7 +3,7 @@ using ES.Lab.Domain;
 
 namespace ES.Lab.Commands
 {
-    public class MakeChoiceCommand : ICommand
+    public class MakeChoiceCommand : IGameCommand
     {
         public MakeChoiceCommand(Guid gameId, String playerId, Choice choice)
         {
