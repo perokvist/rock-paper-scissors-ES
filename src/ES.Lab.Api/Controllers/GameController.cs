@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Newtonsoft.Json.Linq;
 
 namespace ES.Lab.Api.Controllers
 {
@@ -18,13 +19,20 @@ namespace ES.Lab.Api.Controllers
         {
             _commandBus = commandBus;
         }
-        
+
         [HttpPost]
-        public bool CreateGame()
+        public HttpResponseMessage CreateGame(JObject input)
         {
-            var command = new CreateGameCommand(Guid.NewGuid(), "player", "newGame", 3);
+            //TODO async, remove xml support
+            var gameId = Guid.NewGuid();
+            var player = base.User.Identity.Name;
+            ////TODO Validate command
+            var command = new CreateGameCommand(gameId, player, input.Value<string>("name") ,input.Value<int>("firstTo"));
             _commandBus.Send(command);
-            return true;
+            var response = Request.CreateResponse(HttpStatusCode.Created);
+            var uri = Url.Link("DefaultApi", new { id = gameId });
+            response.Headers.Location = new Uri(uri);
+            return response;
         }
 
     }

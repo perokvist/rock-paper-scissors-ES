@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http.SelfHost;
 using NUnit.Framework;
@@ -29,20 +30,27 @@ namespace ES.Lab.Api.IntegrationTests
             _server.OpenAsync().Wait();
         }
 
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            _server.CloseAsync().Wait();
+        }
+
         [Test]
-        public void CreateGameReturns200()
+        public void CreateGameReturnsCreated()
         {
             var client = new HttpClient(_server);
-            var request = CreateRequest("api/Game", "application/json", HttpMethod.Post);
-
+            var request = CreateRequest
+                ("api/Game", "application/json", HttpMethod.Post, new { name ="test", firstTo=3 }, new JsonMediaTypeFormatter());
+         
             using (var response = client.SendAsync(request).Result)
             {
                 Assert.IsNotNull(response);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.NotNull(response.Content);
+                Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+                Assert.IsTrue(response.Headers.Location.OriginalString.StartsWith(_urlBase + "api/Game/"));
             }
         }
-
+        
         private HttpRequestMessage CreateRequest(string url, string contentType, HttpMethod method)
         {
             var request = new HttpRequestMessage {RequestUri = new Uri(_urlBase + url)};
@@ -52,11 +60,13 @@ namespace ES.Lab.Api.IntegrationTests
             return request;
         }
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
+        private HttpRequestMessage CreateRequest<T>(string url, string contentType, HttpMethod method, T content, MediaTypeFormatter formatter) where T : class
         {
-            _server.CloseAsync().Wait();
-        }
+            HttpRequestMessage request = CreateRequest(url, contentType, method);
+            request.Content = new ObjectContent<T>(content, formatter);
 
+            return request;
+        }
+        
     }
 }
