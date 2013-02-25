@@ -1,4 +1,5 @@
-﻿using ES.Lab.Commands;
+﻿using System.Threading.Tasks;
+using ES.Lab.Commands;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ES.Lab.Api.Infrastructure
 
         public void Send(ICommand command)
         {
-            _applicationService.Handle(command);
+            Task.Run(() => _applicationService.Handle(command));
         } 
     }
 }

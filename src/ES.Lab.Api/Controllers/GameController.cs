@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Threading.Tasks;
+using System.Web;
 using ES.Lab.Api.Infrastructure;
 using ES.Lab.Commands;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ES.Lab.Infrastructure;
 using Newtonsoft.Json.Linq;
 
 namespace ES.Lab.Api.Controllers
@@ -21,18 +23,15 @@ namespace ES.Lab.Api.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage CreateGame(JObject input)
+        public async Task<HttpResponseMessage> CreateGame(JObject input)
         {
-            //TODO async, remove xml support
+            //TODO remove xml support
             var gameId = Guid.NewGuid();
-            var player = base.User.Identity.Name;
             ////TODO Validate command
-            var command = new CreateGameCommand(gameId, player, input.Value<string>("name") ,input.Value<int>("firstTo"));
+            var command = new CreateGameCommand(gameId, base.User.Identity.Name, input.Value<string>("name") ,input.Value<int>("firstTo"));
             _commandBus.Send(command);
-            var response = Request.CreateResponse(HttpStatusCode.Created);
-            var uri = Url.Link("DefaultApi", new { id = gameId });
-            response.Headers.Location = new Uri(uri);
-            return response;
+            return Request.CreateResponse(HttpStatusCode.Created)
+                .Tap(r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new {id = gameId})));
         }
 
     }

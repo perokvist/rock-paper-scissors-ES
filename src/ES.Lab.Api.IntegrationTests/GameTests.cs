@@ -62,6 +62,7 @@ namespace ES.Lab.Api.IntegrationTests
 
         private HttpRequestMessage CreateRequest<T>(string url, string contentType, HttpMethod method, T content, MediaTypeFormatter formatter) where T : class
         {
+            //TODO contentType enum
             HttpRequestMessage request = CreateRequest(url, contentType, method);
             request.Content = new ObjectContent<T>(content, formatter);
 

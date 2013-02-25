@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace ES.Lab.Read
 {
-    public class OpenGamesDenormalizer : IgnoreNonApplicableEvents, IProjection
+    public class OpenGamesProjection : IgnoreNonApplicableEvents, IProjection
     {
         private readonly IDictionary<Guid, OpenGame> _openGames;
 
-        public OpenGamesDenormalizer()
+        public OpenGamesProjection()
         {
             _openGames = new ConcurrentDictionary<Guid, OpenGame>();
         }

@@ -17,15 +17,15 @@ namespace ES.Lab.IntegrationTests
     public class ApplicationServiceTests
     {
         private Func<ApplicationService<Game>> _appserviceFactory;
-        private GameDetailsDenormalizer _details;
-        private OpenGamesDenormalizer _openGames;
+        private GameDetailsProjection _details;
+        private OpenGamesProjection _openGames;
         private IEventStore _store;
 
         [SetUp]
         public void Setup()
         {
-            _details = new GameDetailsDenormalizer();
-            _openGames = new OpenGamesDenormalizer();
+            _details = new GameDetailsProjection();
+            _openGames = new OpenGamesProjection();
 
             var eventStoreFactory = new Lazy<IEventStore>(() =>
                                               {
@@ -55,7 +55,7 @@ namespace ES.Lab.IntegrationTests
         public void AggregateServiceShouldDelegateToListenersOnCreate()
         {
             //Arrange
-            _details = A.Fake<GameDetailsDenormalizer>();
+            _details = A.Fake<GameDetailsProjection>();
             var appservice = _appserviceFactory();
 
             //Act
@@ -70,8 +70,8 @@ namespace ES.Lab.IntegrationTests
         public void AggregateServiceShouldDelegateToListenersOnStarted()
         {
             //Arrange
-            _details = A.Fake<GameDetailsDenormalizer>();
-            _openGames = A.Fake<OpenGamesDenormalizer>();
+            _details = A.Fake<GameDetailsProjection>();
+            _openGames = A.Fake<OpenGamesProjection>();
             var id = Guid.NewGuid();
 
             //Act, Assert

@@ -177,9 +177,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Security\BasicAuthenticationMessageHandler.cs" />
     <Compile Include="Infrastructure\Bootstrapper.cs" />
     <Compile Include="Infrastructure\CommandBus.cs" />
     <Compile Include="Infrastructure\ICommandBus.cs" />
+    <Compile Include="Infrastructure\Security\GenericAuthenticationService.cs" />
+    <Compile Include="Infrastructure\Security\GenericRoleProvider.cs" />
+    <Compile Include="Infrastructure\Security\IAuthenticationService.cs" />
+    <Compile Include="Infrastructure\Security\IPrincipalProvider.cs" />
+    <Compile Include="Infrastructure\Security\IRoleProvider.cs" />
+    <Compile Include="Infrastructure\Security\PrincipalProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

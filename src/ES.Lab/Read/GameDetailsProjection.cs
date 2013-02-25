@@ -5,11 +5,11 @@ using System.Linq;
 using ES.Lab.Events;
 namespace ES.Lab.Read
 {
-    public class GameDetailsDenormalizer : IgnoreNonApplicableEvents, IProjection
+    public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection
     {
         private readonly IDictionary<Guid, GameDetails> _gameDetails;
 
-        public GameDetailsDenormalizer()
+        public GameDetailsProjection()
         {
             _gameDetails = new ConcurrentDictionary<Guid, GameDetails>();
         }

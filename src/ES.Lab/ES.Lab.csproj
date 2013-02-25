@@ -68,11 +68,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Read\EventListner.cs" />
     <Compile Include="Read\GameDetails.cs" />
-    <Compile Include="Read\GameDetailsDenormalizer.cs" />
+    <Compile Include="Read\GameDetailsProjection.cs" />
     <Compile Include="Read\IgnoreNonApplicableEvents.cs" />
     <Compile Include="Read\IProjection.cs" />
     <Compile Include="Read\OpenGame.cs" />
-    <Compile Include="Read\OpenGamesDenormalizer.cs" />
+    <Compile Include="Read\OpenGamesProjection.cs" />
     <Compile Include="Read\Round.cs" />
   </ItemGroup>
   <ItemGroup />
