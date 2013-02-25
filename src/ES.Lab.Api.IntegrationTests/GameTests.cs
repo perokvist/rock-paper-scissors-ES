@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http.SelfHost;
+using ES.Lab.Api.Infrastructure.Security;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,11 @@ namespace ES.Lab.Api.IntegrationTests
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            var config = new HttpSelfHostConfiguration(_urlBase) {DependencyResolver = Bootstrapper.Start()};
-            WebApiConfig.Register(config); 
+            var config = new HttpSelfHostConfiguration(_urlBase) { DependencyResolver = Bootstrapper.Start() };
+            config.MessageHandlers
+                .Add(config.DependencyResolver.GetService(typeof(BasicAuthenticationMessageHandler)) as BasicAuthenticationMessageHandler);
+            WebApiConfig.Register(config);
+            
             _server = new HttpSelfHostServer(config);
             _server.OpenAsync().Wait();
         }
@@ -37,12 +41,27 @@ namespace ES.Lab.Api.IntegrationTests
         }
 
         [Test]
+        public void CreateGameRequiresAuth()
+        {
+            var client = new HttpClient(_server);
+            var request = CreateRequest
+                ("api/Game", "application/json", HttpMethod.Post, new { name = "test", firstTo = 3 },
+                new JsonMediaTypeFormatter());
+
+            using (var response = client.SendAsync(request).Result)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            }
+        }
+
+        [Test]
         public void CreateGameReturnsCreated()
         {
             var client = new HttpClient(_server);
             var request = CreateRequest
-                ("api/Game", "application/json", HttpMethod.Post, new { name ="test", firstTo=3 }, new JsonMediaTypeFormatter());
-         
+                ("api/Game", "application/json", HttpMethod.Post, new { name = "test", firstTo = 3 }, 
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
             using (var response = client.SendAsync(request).Result)
             {
                 Assert.IsNotNull(response);
@@ -50,24 +69,25 @@ namespace ES.Lab.Api.IntegrationTests
                 Assert.IsTrue(response.Headers.Location.OriginalString.StartsWith(_urlBase + "api/Game/"));
             }
         }
-        
-        private HttpRequestMessage CreateRequest(string url, string contentType, HttpMethod method)
+
+        private HttpRequestMessage CreateRequest(string url, string contentType, HttpMethod method, string user, string pass)
         {
-            var request = new HttpRequestMessage {RequestUri = new Uri(_urlBase + url)};
+            var request = new HttpRequestMessage { RequestUri = new Uri(_urlBase + url) };
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
             request.Method = method;
-
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
+            Encoding.ASCII.GetBytes(string.Format("{0}:{1}", user, pass))));
             return request;
         }
 
-        private HttpRequestMessage CreateRequest<T>(string url, string contentType, HttpMethod method, T content, MediaTypeFormatter formatter) where T : class
+        private HttpRequestMessage CreateRequest<T>(string url, string contentType, HttpMethod method, T content, MediaTypeFormatter formatter,
+            string user = null, string pass = null) where T : class
         {
-            //TODO contentType enum
-            HttpRequestMessage request = CreateRequest(url, contentType, method);
+            var request = CreateRequest(url, contentType, method, user, pass);
             request.Content = new ObjectContent<T>(content, formatter);
 
             return request;
         }
-        
+
     }
 }

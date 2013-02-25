@@ -9,10 +9,14 @@ namespace ES.Lab.Api.Infrastructure.Security
 {
     public class BasicAuthenticationMessageHandler : DelegatingHandler
     {
+        private readonly IPrincipalProvider _principalProvider;
         private const string BasicAuthResponseHeader = "WWW-Authenticate";
         private const string BasicAuthResponseHeaderValue = "Basic";
 
-        public IPrincipalProvider PrincipalProvider { get; set; }
+        public BasicAuthenticationMessageHandler(IPrincipalProvider principalProvider)
+        {
+            _principalProvider = principalProvider;
+        }
 
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request,
@@ -24,7 +28,7 @@ namespace ES.Lab.Api.Infrastructure.Security
                 var parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
                 if (parsedCredentials != null)
                 {
-                    Thread.CurrentPrincipal = PrincipalProvider
+                    Thread.CurrentPrincipal = _principalProvider
                         .CreatePrincipal(parsedCredentials.Username, parsedCredentials.Password);
                 }
             }

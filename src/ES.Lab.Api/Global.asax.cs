@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using ES.Lab.Api.Infrastructure.Security;
 
 namespace ES.Lab.Api
 {
@@ -20,6 +21,8 @@ namespace ES.Lab.Api
             AreaRegistration.RegisterAllAreas();
 
             GlobalConfiguration.Configuration.DependencyResolver = Bootstrapper.Start();
+            GlobalConfiguration.Configuration.MessageHandlers
+                .Add(GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(BasicAuthenticationMessageHandler)) as BasicAuthenticationMessageHandler);
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

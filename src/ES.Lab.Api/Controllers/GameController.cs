@@ -13,6 +13,8 @@ using Newtonsoft.Json.Linq;
 
 namespace ES.Lab.Api.Controllers
 {
+  
+    [Authorize(Roles = "Player")]
     public class GameController : ApiController
     {
         private readonly ICommandBus _commandBus;
@@ -20,6 +22,11 @@ namespace ES.Lab.Api.Controllers
         public GameController(ICommandBus commandBus)
         {
             _commandBus = commandBus;
+        }
+
+        public string Get()
+        {
+            return "ping";
         }
 
         [HttpPost]
