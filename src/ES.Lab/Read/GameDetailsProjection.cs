@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using ES.Lab.Events;
+using Treefort.Events;
+using Treefort.Read;
 namespace ES.Lab.Read
 {
     public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection, IGameDetailView

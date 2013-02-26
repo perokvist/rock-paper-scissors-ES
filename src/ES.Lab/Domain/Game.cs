@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using ES.Lab.Commands;
 using ES.Lab.Events;
+using Treefort.Events;
 
 namespace ES.Lab.Domain
 {
@@ -31,7 +32,7 @@ namespace ES.Lab.Domain
             return new List<IEvent>
                        {
                            new GameCreatedEvent(
-                               command.EntityId,
+                               command.AggregateId,
                                command.PlayerId,
                                command.Title,
                                command.FirstTo,
@@ -76,12 +77,12 @@ namespace ES.Lab.Domain
                 if (playerTwoChoice == winsAgainstOne)
                     newRound = RoundWonBy(playerTwo, command, events);
                 else if (playerOneChoice == playerTwo.CurrentChoice)
-                    events.Add(new RoundTiedEvent(command.EntityId, round));
+                    events.Add(new RoundTiedEvent(command.AggregateId, round));
                 else
                     newRound = RoundWonBy(playerOne, command, events);
 
                 if (newRound)
-                    events.Add(new RoundStartedEvent(command.EntityId, round + 1));
+                    events.Add(new RoundStartedEvent(command.AggregateId, round + 1));
             }
             return events;
         }
@@ -137,12 +138,12 @@ namespace ES.Lab.Domain
 
         private void GameWonBy(GamePlayer player, MakeChoiceCommand command, List<IEvent> events)
         {
-            events.Add(new GameWonEvent(command.EntityId, player.Email));
+            events.Add(new GameWonEvent(command.AggregateId, player.Email));
         }
 
         private bool RoundWonBy(GamePlayer player, MakeChoiceCommand command, List<IEvent> events)
         {
-            events.Add(new RoundWonEvent(command.EntityId, player.Email, round));
+            events.Add(new RoundWonEvent(command.AggregateId, player.Email, round));
             if (IsWinner(playerTwo))
             {
                 GameWonBy(playerTwo, command, events);
@@ -154,7 +155,7 @@ namespace ES.Lab.Domain
         private Choice PlayerChoice(MakeChoiceCommand command, List<IEvent> events)
         {
             events.Add(new ChoiceMadeEvent(
-                         command.EntityId,
+                         command.AggregateId,
                          this.round,
                          command.PlayerId,
                          command.Choice));

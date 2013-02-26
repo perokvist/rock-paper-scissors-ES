@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ES.Lab.Commands;
 using ES.Lab.Domain;
 using ES.Lab.Events;
-using ES.Lab.Infrastructure;
 using ES.Lab.Read;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
+using Treefort.Common.Extensions;
+using Treefort.Events;
+using Treefort.Commanding;
+using Treefort.Infrastructure;
+using Treefort.Read;
 
 namespace ES.Lab.IntegrationTests
 {
@@ -130,7 +132,7 @@ namespace ES.Lab.IntegrationTests
         {
             var appservice = _appserviceFactory();
             commands.ForEach(appservice.Handle);
-            assert(_details.GetGameDetails(commands.First().EntityId));
+            assert(_details.GetGameDetails(commands.First().AggregateId));
         }
     }
 }

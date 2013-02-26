@@ -1,5 +1,6 @@
 using System;
 using ES.Lab.Domain;
+using Treefort.Events;
 
 namespace ES.Lab.Events
 {

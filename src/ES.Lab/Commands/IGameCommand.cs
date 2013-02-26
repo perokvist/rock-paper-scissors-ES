@@ -1,4 +1,5 @@
-﻿namespace ES.Lab.Commands
+﻿using Treefort.Commanding;
+namespace ES.Lab.Commands
 {
     public interface IGameCommand : ICommand
     {

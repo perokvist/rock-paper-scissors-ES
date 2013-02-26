@@ -1,10 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ES.Lab.Commands;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using ES.Lab.Infrastructure;
-using Autofac;
+using Treefort;
+using Treefort.Commanding;
 
 namespace ES.Lab.Api.Infrastructure
 {

@@ -7,11 +7,11 @@ namespace ES.Lab.Commands
         public JoinGameCommand(Guid entityId, string playerId)
         {
             PlayerId = playerId;
-            EntityId = entityId;
+            AggregateId = entityId;
         }
 
         public string PlayerId { get; private set; }
-        public Guid EntityId { get; private set; }
+        public Guid AggregateId { get; private set; }
 
     }
 }

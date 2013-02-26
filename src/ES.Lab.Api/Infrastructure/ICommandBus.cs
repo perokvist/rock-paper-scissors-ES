@@ -1,3 +1,4 @@
+using Treefort.Commanding;
 namespace ES.Lab.Api.Infrastructure
 {
     public interface ICommandBus

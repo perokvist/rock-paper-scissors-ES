@@ -7,12 +7,12 @@ namespace ES.Lab.Commands
     {
         public MakeChoiceCommand(Guid gameId, String playerId, Choice choice)
         {
-            EntityId = gameId;
+            AggregateId = gameId;
             PlayerId = playerId;
             Choice = choice;
         }
 
-        public Guid EntityId { get; private set; }
+        public Guid AggregateId { get; private set; }
         public string PlayerId { get; private set; }
         public Choice Choice { get; private set; }
 

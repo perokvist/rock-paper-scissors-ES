@@ -6,13 +6,13 @@ namespace ES.Lab.Commands
     {
         public CreateGameCommand(Guid entityId, string playerId, string title, int firstTo)
         {
-            EntityId = entityId;
+            AggregateId = entityId;
             PlayerId = playerId;
             Title = title;
             FirstTo = firstTo;
         }
 
-        public Guid EntityId { get; private set; }
+        public Guid AggregateId { get; private set; }
         public string PlayerId { get; private set; }
         public string Title { get; private set; }
         public int FirstTo { get; private set; }
