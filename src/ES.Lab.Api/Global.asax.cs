@@ -19,8 +19,9 @@ namespace ES.Lab.Api
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            //Web Api
             Start(GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //MVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
@@ -34,7 +35,7 @@ namespace ES.Lab.Api
                     configuration.DependencyResolver.GetService(typeof (BasicAuthenticationMessageHandler))
                     as BasicAuthenticationMessageHandler);
             WebApiConfig.Register(configuration);
-            
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
     }
 }
