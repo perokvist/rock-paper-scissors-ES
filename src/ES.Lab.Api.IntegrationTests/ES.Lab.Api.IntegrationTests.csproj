@@ -58,8 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WithSelfHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
