@@ -19,15 +19,21 @@ namespace ES.Lab.Api
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
-            GlobalConfiguration.Configuration.DependencyResolver = Bootstrapper.Start();
-            GlobalConfiguration.Configuration.MessageHandlers
-                .Add(GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(BasicAuthenticationMessageHandler)) as BasicAuthenticationMessageHandler);
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
+            Start(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+        }
+
+        public static void Start(HttpConfiguration configuration)
+        {
+            configuration.DependencyResolver = Bootstrapper.Start();
+            configuration.MessageHandlers
+                .Add(
+                    configuration.DependencyResolver.GetService(typeof (BasicAuthenticationMessageHandler))
+                    as BasicAuthenticationMessageHandler);
+            WebApiConfig.Register(configuration);
             
         }
     }

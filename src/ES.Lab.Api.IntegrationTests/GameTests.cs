@@ -20,16 +20,13 @@ namespace ES.Lab.Api.IntegrationTests
     public class GameTests
     {
         private static HttpSelfHostServer _server;
-        private const string _urlBase = "http://eslab.server/";
+        private const string UrlBase = "http://eslab.server/";
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            var config = new HttpSelfHostConfiguration(_urlBase) { DependencyResolver = Bootstrapper.Start() };
-            config.MessageHandlers
-                .Add(config.DependencyResolver.GetService(typeof(BasicAuthenticationMessageHandler)) as BasicAuthenticationMessageHandler);
-            WebApiConfig.Register(config);
-            
+            var config = new HttpSelfHostConfiguration(UrlBase);
+            WebApiApplication.Start(config);
             _server = new HttpSelfHostServer(config);
             _server.OpenAsync().Wait();
         }
@@ -43,6 +40,7 @@ namespace ES.Lab.Api.IntegrationTests
         [Test]
         public void CreateGameRequiresAuth()
         {
+            //TODO all routes
             var client = new HttpClient(_server);
             var request = CreateRequest
                 ("api/Game", "application/json", HttpMethod.Post, new { name = "test", firstTo = 3 },
@@ -66,13 +64,48 @@ namespace ES.Lab.Api.IntegrationTests
             {
                 Assert.IsNotNull(response);
                 Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-                Assert.IsTrue(response.Headers.Location.OriginalString.StartsWith(_urlBase + "api/Game/"));
+                Assert.IsTrue(response.Headers.Location.OriginalString.StartsWith(UrlBase + "api/Game/"));
             }
         }
 
+
+        [Test]
+        public void JoinGameReturnsOk()
+        {
+            var client = new HttpClient(_server);
+            var request = CreateRequest
+                (string.Format("api/Game/{0}/opponent", Guid.NewGuid()), "application/json", HttpMethod.Post, new {},
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
+            using (var response = client.SendAsync(request).Result)
+            {
+                Assert.IsNotNull(response);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.IsTrue(response.Headers.Location.OriginalString.StartsWith(UrlBase + "api/Game/"));
+            }
+        }
+
+        [Test]
+        public void ChoiceReturnsOk()
+        {
+            var client = new HttpClient(_server);
+            var request = CreateRequest
+                (string.Format("api/Game/{0}/choice", Guid.NewGuid()), "application/json", 
+                HttpMethod.Post, new { choice = "2"},
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
+            using (var response = client.SendAsync(request).Result)
+            {
+                Assert.IsNotNull(response);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.IsTrue(response.Headers.Location.OriginalString.StartsWith(UrlBase + "api/Game/"));
+            }
+        }
+
+
         private HttpRequestMessage CreateRequest(string url, string contentType, HttpMethod method, string user, string pass)
         {
-            var request = new HttpRequestMessage { RequestUri = new Uri(_urlBase + url) };
+            var request = new HttpRequestMessage { RequestUri = new Uri(UrlBase + url) };
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
             request.Method = method;
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(

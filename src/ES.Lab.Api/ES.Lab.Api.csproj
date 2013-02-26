@@ -181,6 +181,7 @@
     <Compile Include="Infrastructure\Bootstrapper.cs" />
     <Compile Include="Infrastructure\CommandBus.cs" />
     <Compile Include="Infrastructure\ICommandBus.cs" />
+    <Compile Include="Infrastructure\Security\Credentials.cs" />
     <Compile Include="Infrastructure\Security\GenericAuthenticationService.cs" />
     <Compile Include="Infrastructure\Security\GenericRoleProvider.cs" />
     <Compile Include="Infrastructure\Security\IAuthenticationService.cs" />
