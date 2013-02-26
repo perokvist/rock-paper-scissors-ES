@@ -7,7 +7,7 @@ using Treefort.Read;
 
 namespace ES.Lab.Read
 {
-    public class OpenGamesProjection : IgnoreNonApplicableEvents, IProjection, IOpenGamesView
+    public class OpenGamesProjection : IgnoreNonApplicableEvents, IProjection
     {
         private readonly IDictionary<Guid, OpenGame> _openGames;
 
@@ -24,11 +24,6 @@ namespace ES.Lab.Read
         public virtual void Handle(GameStartedEvent @event)
         {
             _openGames.Remove(@event.GameId);
-        }
-
-        public IEnumerable<OpenGame> GetOpenGames()
-        {
-            return _openGames.Values;
         }
         
         void IProjection.When(IEvent @event)

@@ -4,10 +4,14 @@ using ES.Lab.Read;
 
 namespace ES.Lab.Infrastructure.Data
 {
-    public interface IProjectionContext
+    public interface IProjectionContext : IReadContext
     {
-        IDbSet<GameDetails> GameDetails { get; set; }
-        IDbSet<OpenGame> OpenGames { get; set; }
         Task<int> SaveChangesAsync();
+    }
+
+    public interface IReadContext
+    {
+        IDbSet<GameDetails> GameDetails { get; }
+        IDbSet<OpenGame> OpenGames { get; }
     }
 }

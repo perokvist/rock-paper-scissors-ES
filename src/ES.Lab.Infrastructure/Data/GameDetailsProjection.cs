@@ -8,7 +8,7 @@ using Treefort.Events;
 using Treefort.Read;
 namespace ES.Lab.Infrastructure.Data
 {
-    public class GameDetailsProjection : IProjection, IGameDetailView
+    public class GameDetailsProjection : IProjection
     {
         private readonly IProjectionContext _context;
 
@@ -41,23 +41,18 @@ namespace ES.Lab.Infrastructure.Data
                     round.PlayerOneHasMadeMove = true;
                 else if (g.PlayerTwoId == @event.PlayerId)
                     round.PlayerTwoHasMadeMove = true;
-            }
-        );
+            });
         }
 
         public virtual void Handle(GameWonEvent @event)
         {
             Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
         }
-
-        public GameDetails GetGameDetails(Guid gameId)
-        {
-            return _context.GameDetails.SingleOrDefault(g => g.GameId == gameId);
-        }
-
+        
         void IProjection.When(IEvent @event)
         {
             this.Handle((dynamic)@event);
+            //TODO multitenent eventstore, ioc(EF), async
             _context.SaveChangesAsync();
         }
 

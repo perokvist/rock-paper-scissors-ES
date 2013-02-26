@@ -31,7 +31,7 @@ namespace ES.Lab.Api.Infrastructure
                                      System.Reflection.Assembly.GetAssembly(typeof (IApplicationService)))
                 .Except<InMemoryEventStore>()
                 .Except<DelegatingEventStore>()
-                .Except<GameDetailsProjection>()
+                //.Except<GameDetailsProjection>()
                 .Except<OpenGamesProjection>()
                 .Except<GenericAuthenticationService>()
                 .Except<GenericRoleProvider>()
@@ -49,10 +49,10 @@ namespace ES.Lab.Api.Infrastructure
                 (c, inner) => new DelegatingEventStore(inner, c.Resolve<IEnumerable<IEventListner>>()),
                 fromKey: "implementor");
 
-            cb.RegisterType<GameDetailsProjection>()
-                .AsSelf()
-                .AsImplementedInterfaces()
-                .SingleInstance();
+            //cb.RegisterType<GameDetailsProjection>()
+            //    .AsSelf()
+            //    .AsImplementedInterfaces()
+            //    .SingleInstance();
 
             cb.RegisterType<OpenGamesProjection>()
                 .AsSelf()

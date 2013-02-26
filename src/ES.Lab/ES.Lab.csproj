@@ -61,11 +61,7 @@
     <Compile Include="Events\GameCreatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Read\GameDetails.cs" />
-    <Compile Include="Read\GameDetailsProjection.cs" />
-    <Compile Include="Read\GameViewsFacade.cs" />
-    <Compile Include="Read\IGameView.cs" />
     <Compile Include="Read\IGameViews.cs" />
-    <Compile Include="Read\IOpenGamesView.cs" />
     <Compile Include="Read\OpenGame.cs" />
     <Compile Include="Read\OpenGamesProjection.cs" />
     <Compile Include="Read\Round.cs" />
