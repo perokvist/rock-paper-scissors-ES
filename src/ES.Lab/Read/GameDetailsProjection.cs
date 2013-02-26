@@ -5,7 +5,7 @@ using System.Linq;
 using ES.Lab.Events;
 namespace ES.Lab.Read
 {
-    public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection
+    public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection, IGameDetailView
     {
         private readonly IDictionary<Guid, GameDetails> _gameDetails;
 

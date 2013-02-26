@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ES.Lab.Read
 {
-    public class OpenGamesProjection : IgnoreNonApplicableEvents, IProjection
+    public class OpenGamesProjection : IgnoreNonApplicableEvents, IProjection, IOpenGamesView
     {
         private readonly IDictionary<Guid, OpenGame> _openGames;
 

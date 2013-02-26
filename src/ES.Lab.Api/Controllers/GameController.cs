@@ -21,10 +21,12 @@ namespace ES.Lab.Api.Controllers
     public class GameController : ApiController
     {
         private readonly ICommandBus _commandBus;
+        private readonly IGameViews _gameViews;
 
-        public GameController(ICommandBus commandBus)
+        public GameController(ICommandBus commandBus, IGameViews gameViews)
         {
             _commandBus = commandBus;
+            _gameViews = gameViews;
         }
 
         [HttpPost]
@@ -42,27 +44,31 @@ namespace ES.Lab.Api.Controllers
         public async Task<HttpResponseMessage> JoinGame([FromUri]Guid id)
         {
             _commandBus.Send(new JoinGameCommand(id, User.Identity.Name));
-            return
-                Request.CreateResponse(HttpStatusCode.OK).Tap(
+            return Request.CreateResponse(HttpStatusCode.OK).Tap(
                     r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new {id = id})));
         }
 
         [HttpPost]
         public async Task<HttpResponseMessage> Choice([FromUri]Guid id, JObject input)
         {
-            var choice = input.Value<int>("choice");
-            if(choice<= 0)
+            Choice choice; //TODO remove domain enum here and in command...
+            if(!Enum.TryParse(input.Value<string>("choice"), out choice))
                 throw new ArgumentException();
-            _commandBus.Send(new MakeChoiceCommand(id, User.Identity.Name,(Choice) choice));
-            return
-                Request.CreateResponse(HttpStatusCode.OK).Tap(
+
+            _commandBus.Send(new MakeChoiceCommand(id, User.Identity.Name, choice));
+            return Request.CreateResponse(HttpStatusCode.OK).Tap(
                     r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new {id})));
         }
 
         public async Task<GameDetails> GetGame([FromUri]Guid id)
         {
-            //TODO impl
-            return new GameDetails(id, "some player");
+            return _gameViews.GetGameDetails(id);
         }   
+
+        [Queryable]
+        public async Task<IQueryable<OpenGame>> GetOpenGames()
+        {
+            return _gameViews.GetOpenGames().AsQueryable();
+        }  
     }
 }

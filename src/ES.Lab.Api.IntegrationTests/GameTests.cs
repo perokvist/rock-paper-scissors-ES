@@ -71,6 +71,28 @@ namespace ES.Lab.Api.IntegrationTests
 
         }
 
-        
+        [Test]
+        public void GetGameReturnsOk()
+        {
+            var request = CreateRequest
+                (string.Format("api/Game/{0}", Guid.NewGuid()), MediaType.Json, HttpMethod.Get, new { },
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
+            Send(request, res => res.Tap(Assert.IsNotNull)
+                                     .Tap(r => Assert.AreEqual(HttpStatusCode.OK, r.StatusCode)));
+        }
+
+
+        [Test]
+        public void GetOpenGamesReturnsOk()
+        {
+            var request = CreateRequest
+                ("api/Game/", MediaType.Json, HttpMethod.Get, new { },
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
+            Send(request, res => res.Tap(Assert.IsNotNull)
+                                     .Tap(r => Assert.AreEqual(HttpStatusCode.OK, r.StatusCode)));
+        }
+
     }
 }

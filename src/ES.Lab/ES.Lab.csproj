@@ -69,7 +69,11 @@
     <Compile Include="Read\EventListner.cs" />
     <Compile Include="Read\GameDetails.cs" />
     <Compile Include="Read\GameDetailsProjection.cs" />
+    <Compile Include="Read\GameViewsFacade.cs" />
+    <Compile Include="Read\IGameView.cs" />
+    <Compile Include="Read\IGameViews.cs" />
     <Compile Include="Read\IgnoreNonApplicableEvents.cs" />
+    <Compile Include="Read\IOpenGamesView.cs" />
     <Compile Include="Read\IProjection.cs" />
     <Compile Include="Read\OpenGame.cs" />
     <Compile Include="Read\OpenGamesProjection.cs" />
