@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using ES.Lab.Events;
 using ES.Lab.Read;
@@ -57,9 +58,9 @@ namespace ES.Lab.Infrastructure.Data
         }
 
 
-        private void Apply(Guid id, Action<GameDetails> action)
+        private async void Apply(Guid id, Action<GameDetails> action)
         {
-            var gameDetails = _context.GameDetails.SingleOrDefault(g => g.GameId == id);
+            var gameDetails = await _context.GameDetails.SingleOrDefaultAsync(g => g.GameId == id);
             if (gameDetails == null) return;
             action(gameDetails);
         }

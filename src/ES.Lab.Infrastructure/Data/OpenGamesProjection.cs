@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Data.Entity;
 using System.Linq;
 using ES.Lab.Events;
 using ES.Lab.Read;
@@ -33,9 +34,9 @@ namespace ES.Lab.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
-        private void Apply(Guid id, Action<OpenGame> action)
+        private async void Apply(Guid id, Action<OpenGame> action)
         {
-            var openGame = _context.OpenGames.SingleOrDefault(g => g.GameId == id);
+            var openGame = await _context.OpenGames.SingleOrDefaultAsync(g => g.GameId == id);
             if (openGame == null) return;
             action(openGame);
         }
