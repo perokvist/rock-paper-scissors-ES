@@ -30,7 +30,7 @@ namespace ES.Lab.IntegrationTests
         {
             _projectionContext = new InMemoryProjectionContext();
             _details = new GameDetailsProjection(_projectionContext);
-            _openGames = new OpenGamesProjection();
+            _openGames = new OpenGamesProjection(_projectionContext);
 
             var eventStoreFactory = new Lazy<IEventStore>(() =>
                                               {

@@ -48,12 +48,12 @@ namespace ES.Lab.Infrastructure.Data
         {
             Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
         }
-        
-        void IProjection.When(IEvent @event)
+
+        async void IProjection.When(IEvent @event)
         {
             this.Handle((dynamic)@event);
             //TODO multitenent eventstore, ioc(EF), async
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
 

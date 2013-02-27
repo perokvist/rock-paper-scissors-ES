@@ -29,13 +29,13 @@ namespace ES.Lab.Api.Infrastructure
         private static void RegisterCoreDependencies(ContainerBuilder cb)
         {
             cb.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly(),
-                                     System.Reflection.Assembly.GetAssembly(typeof (IApplicationService)))
+                                     System.Reflection.Assembly.GetAssembly(typeof (IApplicationService)),
+                                     System.Reflection.Assembly.GetAssembly(typeof(IProjectionContext)))
                 .Except<InMemoryEventStore>()
                 .Except<DelegatingEventStore>()
-                //.Except<GameDetailsProjection>()
-                .Except<OpenGamesProjection>()
                 .Except<GenericAuthenticationService>()
                 .Except<GenericRoleProvider>()
+                .Except<InMemoryProjectionContext>()
                 .PreserveExistingDefaults()
                 .AsImplementedInterfaces();
         }
@@ -50,16 +50,6 @@ namespace ES.Lab.Api.Infrastructure
                 (c, inner) => new DelegatingEventStore(inner, c.Resolve<IEnumerable<IEventListner>>()),
                 fromKey: "implementor");
             
-            cb.RegisterType<GameDetailsProjection>()
-                .AsSelf()
-                .AsImplementedInterfaces()
-                .SingleInstance();
-
-
-            cb.RegisterType<OpenGamesProjection>()
-                .AsSelf()
-                .AsImplementedInterfaces()
-                .SingleInstance();
         }
 
         private static void RegisterSecurity(ContainerBuilder cb)
