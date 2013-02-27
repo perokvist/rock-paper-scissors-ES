@@ -15,7 +15,7 @@ namespace ES.Lab.Read
 
         public Guid GameId { get; set; }
 
-        public IList<Round> Rounds { get; set; }
+        public ICollection<Round> Rounds { get; set; }
 
         public string PlayerOneId { get; set; }
 

@@ -58,6 +58,12 @@
     <Compile Include="Data\OpenGamesProjection.cs" />
     <Compile Include="Data\ProjectionContext.cs" />
     <Compile Include="Data\IProjectionContext.cs" />
+    <Compile Include="Data\ProjectionContextConfiguration.cs" />
+    <Compile Include="Migrations\201302271429309_Initial.cs" />
+    <Compile Include="Migrations\201302271429309_Initial.Designer.cs">
+      <DependentUpon>201302271429309_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +75,11 @@
       <Project>{167FB8EA-873C-49F8-AF38-8B72F0257B5A}</Project>
       <Name>ES.Lab</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201302271429309_Initial.resx">
+      <DependentUpon>201302271429309_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

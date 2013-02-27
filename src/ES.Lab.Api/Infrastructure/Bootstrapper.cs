@@ -4,7 +4,6 @@ using Autofac.Integration.WebApi;
 using System.Web.Http.Dependencies;
 using ES.Lab.Domain;
 using ES.Lab.Infrastructure.Data;
-using ES.Lab.Read;
 using ES.Lab.Api.Infrastructure.Security;
 using Treefort;
 using Treefort.Events;
@@ -23,6 +22,7 @@ namespace ES.Lab.Api.Infrastructure
             //TODO see notes in AppService
             cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
+
             return new AutofacWebApiDependencyResolver(cb.Build());
         }
 

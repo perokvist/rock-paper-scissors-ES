@@ -9,6 +9,8 @@ namespace ES.Lab.Read
             this.Number = round;
         }
 
+        public Guid Id { get; set; }
+
         public int Number { get; set; }
 
         public bool PlayerOneHasMadeMove { get; set; }
