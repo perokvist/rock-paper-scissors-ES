@@ -5,15 +5,21 @@ namespace ES.Lab.Read
 {
     public class GameDetails
     {
-        
-        public GameDetails(Guid gameId, string playerOneId)
+        protected GameDetails()
+        {
+            
+        }
+
+        public GameDetails(Guid gameId, string title, string playerOneId)
         {
             GameId = gameId;
+            Title = title;
             PlayerOneId = playerOneId;
             Rounds = new List<Round>();
         }
 
         public Guid GameId { get; set; }
+        public string Title { get; set; }
 
         public ICollection<Round> Rounds { get; set; }
 

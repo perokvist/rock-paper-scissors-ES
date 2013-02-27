@@ -2,8 +2,10 @@
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Web.Http.SelfHost;
 using ES.Lab.Api.Infrastructure.Security;
+using ES.Lab.Read;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -45,7 +47,7 @@ namespace ES.Lab.Api.IntegrationTests
         [Test]
         public void JoinGameReturnsOk()
         {
-            var id = Guid.NewGuid();
+            var id = Guid.Parse("d12830d4-b498-4ac4-810e-fb47ac8b2f4b");
             var request = CreateRequest
                 (string.Format("api/Game/{0}/opponent", id), MediaType.Json, HttpMethod.Post, new { },
                 new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
@@ -68,6 +70,41 @@ namespace ES.Lab.Api.IntegrationTests
             Send(request, res => res.Tap(Assert.IsNotNull)
                 .Tap(r => Assert.AreEqual(HttpStatusCode.OK, r.StatusCode))
                 .Tap(r => Assert.IsTrue(r.Headers.Location.OriginalString.StartsWith(UrlBase + "api/Game/" + id))));
+
+        }
+
+        [Test]
+        public void EndToEnd()
+        {
+            var createGamerequest = CreateRequest
+                ("api/Game", MediaType.Json, HttpMethod.Post, new { name = "test03", firstTo = 1 },
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
+            var id = string.Empty;
+            Send(createGamerequest, r => id = r.Headers.Location.OriginalString.Split('/').Last());
+            id = Guid.Parse(id).ToString();
+
+            var joinGamerequest = CreateRequest
+                (string.Format("api/Game/{0}/opponent", id), MediaType.Json, HttpMethod.Post, new { },
+                new JsonMediaTypeFormatter(), "test2@jayway.com", "eslab");
+            var choicePlayer1Request = CreateRequest(string.Format("api/Game/{0}/choice", id), MediaType.Json,
+                HttpMethod.Post, new { choice = "2" }, new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+            var choicePlayer2Request = CreateRequest(string.Format("api/Game/{0}/choice", id), MediaType.Json,
+                HttpMethod.Post, new { choice = "1" }, new JsonMediaTypeFormatter(), "test2@jayway.com", "eslab");
+
+            var gameRequest = CreateRequest
+                (string.Format("api/Game/{0}", id), MediaType.Json, HttpMethod.Get, new { },
+                new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
+
+            Send(joinGamerequest, g => { });
+            Send(choicePlayer1Request, g => { });
+            Send(choicePlayer2Request, g => { });
+
+            Send(gameRequest, r => { 
+                Assert.AreEqual("test03" ,r.Content.ReadAsAsync<GameDetails>().Result.Title);
+                Assert.AreEqual(HttpStatusCode.OK, r.StatusCode);
+            }
+            );
 
         }
 

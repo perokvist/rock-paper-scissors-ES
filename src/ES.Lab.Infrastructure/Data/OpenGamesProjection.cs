@@ -31,7 +31,7 @@ namespace ES.Lab.Infrastructure.Data
         async void IProjection.When(IEvent @event)
         {
             this.Handle((dynamic)@event);
-            await _context.SaveChangesAsync();
+            int result = _context.SaveChangesAsync().Result;
         }
 
         private async void Apply(Guid id, Action<OpenGame> action)

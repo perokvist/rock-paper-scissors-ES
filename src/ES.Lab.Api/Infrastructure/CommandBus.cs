@@ -15,7 +15,8 @@ namespace ES.Lab.Api.Infrastructure
 
         public void Send(ICommand command)
         {
-            Task.Run(() => _applicationService.Handle(command));
+            _applicationService.Handle(command);
+            //Task.Run(() => _applicationService.Handle(command));
         } 
     }
 }

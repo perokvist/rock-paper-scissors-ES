@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using ES.Lab.Events;
 using ES.Lab.Read;
 using Treefort.Events;
@@ -18,24 +19,24 @@ namespace ES.Lab.Infrastructure.Data
             _context = context;
         }
 
-        public virtual void Handle(GameCreatedEvent @event)
+        public virtual async Task Handle(GameCreatedEvent @event)
         {
-            _context.GameDetails.Add(new GameDetails(@event.GameId, @event.PlayerId));
+            _context.GameDetails.Add(new GameDetails(@event.GameId, @event.Title, @event.PlayerId));
         }
 
-        public virtual void Handle(GameStartedEvent @event)
+        public virtual async Task Handle(GameStartedEvent @event)
         {
-            Apply(@event.GameId, g => g.PlayerTwoId = @event.PlayerTwoId);
+            await Apply(@event.GameId, g => g.PlayerTwoId = @event.PlayerTwoId);
         }
 
-        public virtual void Handle(RoundStartedEvent @event)
+        public virtual async Task Handle(RoundStartedEvent @event)
         {
-            Apply(@event.GameId, g => g.AddRound(new Round(@event.Round)));
+            await Apply(@event.GameId, g => g.AddRound(new Round(@event.Round)));
         }
 
-        public virtual void Handle(ChoiceMadeEvent @event)
+        public virtual async Task Handle(ChoiceMadeEvent @event)
         {
-            Apply(@event.GameId, g =>
+            await Apply(@event.GameId, g =>
             {
                 var round = g.Rounds.Single(r => r.Number == @event.Round);
                 if (g.PlayerOneId == @event.PlayerId)
@@ -45,20 +46,20 @@ namespace ES.Lab.Infrastructure.Data
             });
         }
 
-        public virtual void Handle(GameWonEvent @event)
+        public virtual async Task Handle(GameWonEvent @event)
         {
-            Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
+            await Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
         }
 
         async void IProjection.When(IEvent @event)
         {
-            this.Handle((dynamic)@event);
+            await this.Handle((dynamic)@event);
             //TODO multitenent eventstore, ioc(EF), async
-            await _context.SaveChangesAsync();
+            int result = _context.SaveChangesAsync().Result; //Sync...
         }
 
 
-        private async void Apply(Guid id, Action<GameDetails> action)
+        private async Task Apply(Guid id, Action<GameDetails> action)
         {
             var gameDetails = await _context.GameDetails.SingleOrDefaultAsync(g => g.GameId == id);
             if (gameDetails == null) return;

@@ -4,7 +4,11 @@ namespace ES.Lab.Read
 {
     public class OpenGame
     {
-        
+        protected OpenGame()
+        {
+            
+        }
+
         public OpenGame(Guid gameId, string playerId, DateTime created, int firstTo)
         {
             GameId = gameId;

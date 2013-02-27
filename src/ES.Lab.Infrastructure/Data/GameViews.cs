@@ -13,7 +13,8 @@ namespace ES.Lab.Infrastructure.Data
 
         public GameDetails GetGameDetails(System.Guid gameId)
         {
-            return _context.GameDetails.SingleOrDefault(g => g.GameId == gameId);
+            var r = _context.GameDetails.SingleOrDefault(g => g.GameId == gameId);
+            return r;
         }
 
         public System.Linq.IQueryable<OpenGame> GetOpenGames()

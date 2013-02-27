@@ -63,6 +63,14 @@
     <Compile Include="Migrations\201302271429309_Initial.Designer.cs">
       <DependentUpon>201302271429309_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201302271658321_Title.cs" />
+    <Compile Include="Migrations\201302271658321_Title.Designer.cs">
+      <DependentUpon>201302271658321_Title.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201302271707359_Key change.cs" />
+    <Compile Include="Migrations\201302271707359_Key change.Designer.cs">
+      <DependentUpon>201302271707359_Key change.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,6 +87,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201302271429309_Initial.resx">
       <DependentUpon>201302271429309_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201302271658321_Title.resx">
+      <DependentUpon>201302271658321_Title.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201302271707359_Key change.resx">
+      <DependentUpon>201302271707359_Key change.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

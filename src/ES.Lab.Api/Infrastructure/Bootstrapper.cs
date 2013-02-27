@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using Autofac;
 using Autofac.Integration.WebApi;
 using System.Web.Http.Dependencies;
@@ -8,6 +9,7 @@ using ES.Lab.Api.Infrastructure.Security;
 using Treefort;
 using Treefort.Events;
 using Treefort.Infrastructure;
+using ES.Lab.Infrastructure.Migrations;
 
 namespace ES.Lab.Api.Infrastructure
 {
@@ -22,7 +24,9 @@ namespace ES.Lab.Api.Infrastructure
             //TODO see notes in AppService
             cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
-
+            //Data context
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Configuration>());
+            cb.RegisterType<ProjectionContext>().AsImplementedInterfaces();
             return new AutofacWebApiDependencyResolver(cb.Build());
         }
 
@@ -36,6 +40,7 @@ namespace ES.Lab.Api.Infrastructure
                 .Except<GenericAuthenticationService>()
                 .Except<GenericRoleProvider>()
                 .Except<InMemoryProjectionContext>()
+                .Except<ProjectionContext>()
                 .PreserveExistingDefaults()
                 .AsImplementedInterfaces();
         }
