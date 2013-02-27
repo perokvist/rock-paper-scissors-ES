@@ -8,7 +8,7 @@ using Treefort.Events;
 using Treefort.Read;
 namespace ES.Lab.Infrastructure.Data
 {
-    public class GameDetailsProjection : IProjection
+    public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection
     {
         private readonly IProjectionContext _context;
 

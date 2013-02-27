@@ -23,11 +23,13 @@ namespace ES.Lab.IntegrationTests
         private GameDetailsProjection _details;
         private OpenGamesProjection _openGames;
         private IEventStore _store;
+        private IProjectionContext _projectionContext;
 
         [SetUp]
         public void Setup()
         {
-            _details = new GameDetailsProjection(null);
+            _projectionContext = new InMemoryProjectionContext();
+            _details = new GameDetailsProjection(_projectionContext);
             _openGames = new OpenGamesProjection();
 
             var eventStoreFactory = new Lazy<IEventStore>(() =>
@@ -133,7 +135,8 @@ namespace ES.Lab.IntegrationTests
         {
             var appservice = _appserviceFactory();
             commands.ForEach(appservice.Handle);
-            //assert(_details.GetGameDetails(commands.First().AggregateId));
+            assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == commands.First().AggregateId));
+
         }
     }
 }

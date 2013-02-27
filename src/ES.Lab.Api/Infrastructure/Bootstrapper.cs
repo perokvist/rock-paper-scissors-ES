@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using System.Web.Http.Dependencies;
 using ES.Lab.Domain;
+using ES.Lab.Infrastructure.Data;
 using ES.Lab.Read;
 using ES.Lab.Api.Infrastructure.Security;
 using Treefort;
@@ -48,11 +49,12 @@ namespace ES.Lab.Api.Infrastructure
             cb.RegisterDecorator<IEventStore>(
                 (c, inner) => new DelegatingEventStore(inner, c.Resolve<IEnumerable<IEventListner>>()),
                 fromKey: "implementor");
+            
+            cb.RegisterType<GameDetailsProjection>()
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
 
-            //cb.RegisterType<GameDetailsProjection>()
-            //    .AsSelf()
-            //    .AsImplementedInterfaces()
-            //    .SingleInstance();
 
             cb.RegisterType<OpenGamesProjection>()
                 .AsSelf()

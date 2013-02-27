@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Include="Data\GameDetailsProjection.cs" />
     <Compile Include="Data\GameViews.cs" />
+    <Compile Include="Data\InMemoryDbSet.cs" />
+    <Compile Include="Data\InMemoryProjectionContext.cs" />
     <Compile Include="Data\ProjectionContext.cs" />
     <Compile Include="Data\IProjectionContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -325,6 +325,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ES.Lab.Infrastructure\ES.Lab.Infrastructure.csproj">
+      <Project>{9998be6f-f0e8-43bd-9d1b-a09aa3a05308}</Project>
+      <Name>ES.Lab.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ES.Lab\ES.Lab.csproj">
       <Project>{167fb8ea-873c-49f8-af38-8b72f0257b5a}</Project>
       <Name>ES.Lab</Name>
