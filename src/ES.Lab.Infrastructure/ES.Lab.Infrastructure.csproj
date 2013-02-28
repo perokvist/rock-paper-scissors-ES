@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AsyncEventListner.cs" />
     <Compile Include="Data\GameDetailsProjection.cs" />
     <Compile Include="Data\GameViews.cs" />
     <Compile Include="Data\IgnoreNonApplicableEventsAsync.cs" />

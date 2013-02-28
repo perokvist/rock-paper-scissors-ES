@@ -10,6 +10,7 @@ using Treefort;
 using Treefort.Events;
 using Treefort.Infrastructure;
 using ES.Lab.Infrastructure.Migrations;
+using Treefort.Read;
 
 namespace ES.Lab.Api.Infrastructure
 {
@@ -41,6 +42,7 @@ namespace ES.Lab.Api.Infrastructure
                 .Except<GenericRoleProvider>()
                 .Except<InMemoryProjectionContext>()
                 .Except<ProjectionContext>()
+                .Except<EventListner>()
                 .PreserveExistingDefaults()
                 .AsImplementedInterfaces();
         }
