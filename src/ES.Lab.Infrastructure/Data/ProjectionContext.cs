@@ -14,7 +14,8 @@ namespace ES.Lab.Infrastructure.Data
                 .HasKey(g => g.GameId);
             modelBuilder.Entity<OpenGame>()
                 .HasKey(g => g.GameId);
-            modelBuilder.Entity<Round>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Round>()
+                .HasKey(r => r.Id);
         }
 
         public IDbSet<GameDetails> GameDetails { get; set; }

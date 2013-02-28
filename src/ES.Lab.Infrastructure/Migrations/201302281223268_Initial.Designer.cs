@@ -11,7 +11,7 @@ namespace ES.Lab.Infrastructure.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201302271429309_Initial"; }
+            get { return "201302281223268_Initial"; }
         }
         
         string IMigrationMetadata.Source

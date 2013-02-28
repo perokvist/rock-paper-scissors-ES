@@ -10,7 +10,7 @@ using Treefort.Events;
 using Treefort.Read;
 namespace ES.Lab.Infrastructure.Data
 {
-    public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection
+    public class GameDetailsProjection : IgnoreNonApplicableEvents, IProjection //IgnoreNonApplicableEventsAsync, IProjection
     {
         private readonly IProjectionContext _context;
 
@@ -18,25 +18,41 @@ namespace ES.Lab.Infrastructure.Data
         {
             _context = context;
         }
+         
+        //public virtual async Task Handle(GameCreatedEvent @event)
+        //{
+        //    _context.GameDetails.Add(new GameDetails(@event.GameId, @event.Title, @event.PlayerId));
+        //}
 
-        public virtual async Task Handle(GameCreatedEvent @event)
+        public virtual void Handle(GameCreatedEvent @event)
         {
             _context.GameDetails.Add(new GameDetails(@event.GameId, @event.Title, @event.PlayerId));
         }
 
-        public virtual async Task Handle(GameStartedEvent @event)
+        public virtual void Handle(GameStartedEvent @event)
         {
-            await Apply(@event.GameId, g => g.PlayerTwoId = @event.PlayerTwoId);
+             Apply(@event.GameId, g => g.PlayerTwoId = @event.PlayerTwoId);
         }
 
-        public virtual async Task Handle(RoundStartedEvent @event)
+        //public virtual async Task Handle(GameStartedEvent @event)
+        //{
+        //    await Apply(@event.GameId, g => g.PlayerTwoId = @event.PlayerTwoId);
+        //}
+
+        public virtual void Handle(RoundStartedEvent @event)
         {
-            await Apply(@event.GameId, g => g.AddRound(new Round(@event.Round)));
+            Apply(@event.GameId, g => g.AddRound(new Round { Number = @event.Round }));
         }
 
-        public virtual async Task Handle(ChoiceMadeEvent @event)
+        //public virtual async Task Handle(RoundStartedEvent @event)
+        //{
+        //    await Apply(@event.GameId, g => g.AddRound(new Round { Number = @event.Round}));
+        //}
+
+
+        public virtual void Handle(ChoiceMadeEvent @event)
         {
-            await Apply(@event.GameId, g =>
+            Apply(@event.GameId, g =>
             {
                 var round = g.Rounds.Single(r => r.Number == @event.Round);
                 if (g.PlayerOneId == @event.PlayerId)
@@ -46,26 +62,62 @@ namespace ES.Lab.Infrastructure.Data
             });
         }
 
-        public virtual async Task Handle(GameWonEvent @event)
+        //public virtual async Task Handle(ChoiceMadeEvent @event)
+        //{
+        //    await Apply(@event.GameId, g =>
+        //    {
+        //        var round = g.Rounds.Single(r => r.Number == @event.Round);
+        //        if (g.PlayerOneId == @event.PlayerId)
+        //            round.PlayerOneHasMadeMove = true;
+        //        else if (g.PlayerTwoId == @event.PlayerId)
+        //            round.PlayerTwoHasMadeMove = true;
+        //    });
+        //}
+
+        public virtual void Handle(GameWonEvent @event)
         {
-            await Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
+            Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
         }
 
-        async void IProjection.When(IEvent @event)
+        //public virtual async Task Handle(GameWonEvent @event)
+        //{
+        //    await Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
+        //}
+
+        void IProjection.When(IEvent @event)
         {
-            await this.Handle((dynamic)@event);
+            this.Handle((dynamic)@event);
             //TODO multitenent eventstore, ioc(EF), async
             int result = _context.SaveChangesAsync().Result; //Sync...
         }
 
+        //async void IProjection.When(IEvent @event)
+        //{
+        //    await this.Handle((dynamic)@event);
+        //    //TODO multitenent eventstore, ioc(EF), async
+        //    try
+        //    {
+        //        int result = _context.SaveChangesAsync().Result; //Sync...
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        var ex = e;
+        //        throw;
+        //    }
+        //}
 
-        private async Task Apply(Guid id, Action<GameDetails> action)
+        private void Apply(Guid id, Action<GameDetails> action)
         {
-            var gameDetails = await _context.GameDetails.SingleOrDefaultAsync(g => g.GameId == id);
+            var gameDetails = _context.GameDetails.SingleOrDefaultAsync(g => g.GameId == id).Result;
             if (gameDetails == null) return;
             action(gameDetails);
         }
 
-        
+        //private async Task Apply(Guid id, Action<GameDetails> action)
+        //{
+        //    var gameDetails = await _context.GameDetails.SingleOrDefaultAsync(g => g.GameId == id);
+        //    if (gameDetails == null) return;
+        //    action(gameDetails);
+        //}
     }
 }

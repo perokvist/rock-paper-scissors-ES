@@ -100,8 +100,10 @@ namespace ES.Lab.Api.IntegrationTests
             Send(choicePlayer1Request, g => { });
             Send(choicePlayer2Request, g => { });
 
-            Send(gameRequest, r => { 
-                Assert.AreEqual("test03" ,r.Content.ReadAsAsync<GameDetails>().Result.Title);
+            Send(gameRequest, r =>
+            {
+                Assert.AreEqual(1, r.Content.ReadAsAsync<GameDetails>().Result.Rounds.Count());
+                Assert.AreEqual("test03", r.Content.ReadAsAsync<GameDetails>().Result.Title);
                 Assert.AreEqual(HttpStatusCode.OK, r.StatusCode);
             }
             );

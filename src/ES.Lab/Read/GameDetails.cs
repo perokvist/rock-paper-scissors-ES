@@ -15,13 +15,12 @@ namespace ES.Lab.Read
             GameId = gameId;
             Title = title;
             PlayerOneId = playerOneId;
-            Rounds = new List<Round>();
         }
 
         public Guid GameId { get; set; }
         public string Title { get; set; }
 
-        public ICollection<Round> Rounds { get; set; }
+        public virtual ICollection<Round> Rounds { get; set; }
 
         public string PlayerOneId { get; set; }
 

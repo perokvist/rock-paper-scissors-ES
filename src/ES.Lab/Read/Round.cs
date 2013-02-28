@@ -4,14 +4,9 @@ namespace ES.Lab.Read
 {
     public class Round
     {
-        protected Round()
+        public Round()
         {
-            
-        }
-
-        public Round(int round)
-        {
-            this.Number = round;
+            Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; }

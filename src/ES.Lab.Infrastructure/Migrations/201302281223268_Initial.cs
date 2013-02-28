@@ -11,7 +11,8 @@ namespace ES.Lab.Infrastructure.Migrations
                 "dbo.GameDetails",
                 c => new
                     {
-                        GameId = c.Guid(nullable: false, identity: true),
+                        GameId = c.Guid(nullable: false),
+                        Title = c.String(),
                         PlayerOneId = c.String(),
                         PlayerTwoId = c.String(),
                         WinnerId = c.String(),
@@ -22,7 +23,7 @@ namespace ES.Lab.Infrastructure.Migrations
                 "dbo.Rounds",
                 c => new
                     {
-                        Id = c.Guid(nullable: false, identity: true),
+                        Id = c.Guid(nullable: false),
                         Number = c.Int(nullable: false),
                         PlayerOneHasMadeMove = c.Boolean(nullable: false),
                         PlayerTwoHasMadeMove = c.Boolean(nullable: false),
@@ -36,7 +37,7 @@ namespace ES.Lab.Infrastructure.Migrations
                 "dbo.OpenGames",
                 c => new
                     {
-                        GameId = c.Guid(nullable: false, identity: true),
+                        GameId = c.Guid(nullable: false),
                         PlayerId = c.String(),
                         Created = c.DateTime(nullable: false),
                         FirstTo = c.Int(nullable: false),

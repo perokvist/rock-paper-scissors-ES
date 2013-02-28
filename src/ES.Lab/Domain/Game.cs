@@ -44,7 +44,7 @@ namespace ES.Lab.Domain
         {
             var events = new List<IEvent>();
 
-            if (playerTwo == null)
+            if (playerTwo == null && playerOne != null) //throw ex ?
             {
                 events.Add(new GameStartedEvent(id, playerOne.Email, command.PlayerId));
                 events.Add(new RoundStartedEvent(id, 1));
@@ -56,6 +56,10 @@ namespace ES.Lab.Domain
         public IEnumerable<IEvent> Handle(MakeChoiceCommand command)
         {
             var events = new List<IEvent>();
+
+            if (playerOne == null || playerTwo == null) //TODO throw ex?
+                return events;
+                
             var playerOneChoice = playerOne.CurrentChoice;
             var playerTwoChoice = playerTwo.CurrentChoice;
 
