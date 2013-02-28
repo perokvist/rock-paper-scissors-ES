@@ -15,8 +15,8 @@ namespace ES.Lab.Api.Infrastructure
 
         public void Send(ICommand command)
         {
-            _applicationService.Handle(command);
-            //Task.Run(() => _applicationService.Handle(command));
+            //TODO fire and forget
+            _applicationService.HandleAsync(command).Wait();
         } 
     }
 }

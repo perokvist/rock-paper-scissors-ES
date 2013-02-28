@@ -30,10 +30,10 @@ namespace ES.Lab.Infrastructure.Data
         }
 
 
-        void IProjection.When(IEvent @event)
+        async Task IProjection.WhenAsync(IEvent @event)
         {
-            ((Task)this.Handle((dynamic)@event)).Wait();
-            var r = _context.SaveChangesAsync().Result;
+            await this.Handle((dynamic) @event);
+            await _context.SaveChangesAsync();
         }
 
         private async Task Apply(Guid id, Action<OpenGame> action)

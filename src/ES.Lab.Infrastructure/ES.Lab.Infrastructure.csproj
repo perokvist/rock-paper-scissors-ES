@@ -46,12 +46,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Treefort">
-      <HintPath>..\packages\Treefort.0.0.5\lib\net45\Treefort.dll</HintPath>
+    <Reference Include="Treefort, Version=0.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Treefort.0.0.6\lib\net45\Treefort.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AsyncEventListner.cs" />
+    <Compile Include="Data\UnitOfWorkEventListner.cs" />
     <Compile Include="Data\GameDetailsProjection.cs" />
     <Compile Include="Data\GameViews.cs" />
     <Compile Include="Data\IgnoreNonApplicableEventsAsync.cs" />

@@ -1,27 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Treefort.Common.Extensions;
 using Treefort.Events;
 using Treefort.Read;
 
 namespace ES.Lab.Infrastructure.Data
 {
-    public class AsyncEventListner : IEventListner
+    public class UnitOfWorkEventListner : IEventListner
     {
         private readonly IEnumerable<IProjection> _listerners;
 
-        public AsyncEventListner(IEnumerable<IProjection> listerners)
+        public UnitOfWorkEventListner(IEnumerable<IProjection> listerners)
         {
             _listerners = listerners;
         }
 
-        public void Receive(IEnumerable<IEvent> events)
+        public async Task ReceiveAsync(IEnumerable<IEvent> events)
         {
             foreach (var @event in events)
             {
                 foreach (var projection in _listerners)
                 {
-                    projection.When(@event);
+                    //TODO save and not wait
+                    projection.WhenAsync(@event).Wait();
                 }
             }
         }

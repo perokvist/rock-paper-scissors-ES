@@ -49,10 +49,10 @@ namespace ES.Lab.IntegrationTests
             var appservice = _appserviceFactory();
 
             //Act
-            appservice.Handle(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 3));
+            appservice.HandleAsync(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 3)).Wait();
 
             //Assert
-            _store.CallsTo(s => s.Store(Guid.NewGuid(), 0, null))
+            _store.CallsTo(s => s.StoreAsync(Guid.NewGuid(), 0, null))
                 .WhenArgumentsMatch(ac => ac.OfType<IEnumerable<GameCreatedEvent>>().Count() == 1);
         }
 
@@ -64,7 +64,7 @@ namespace ES.Lab.IntegrationTests
             var appservice = _appserviceFactory();
 
             //Act
-            appservice.Handle(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 2));
+            appservice.HandleAsync(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 2)).Wait();
 
             //Assert
             _details.CallsTo(gd => gd.Handle((GameCreatedEvent)null))
@@ -134,9 +134,8 @@ namespace ES.Lab.IntegrationTests
         private void PlayGame(Action<GameDetails> assert, params ICommand[] commands)
         {
             var appservice = _appserviceFactory();
-            commands.ForEach(appservice.Handle);
+            commands.ForEach(c => appservice.HandleAsync(c).Wait());
             assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == commands.First().AggregateId));
-
         }
     }
 }

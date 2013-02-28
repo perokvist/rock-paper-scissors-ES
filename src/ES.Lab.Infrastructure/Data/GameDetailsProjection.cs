@@ -52,11 +52,11 @@ namespace ES.Lab.Infrastructure.Data
             await Apply(@event.GameId, g => g.WinnerId = @event.PlayerId);
         }
 
-        void IProjection.When(IEvent @event)
+        async Task IProjection.WhenAsync(IEvent @event)
         {
             //TODO multitenent eventstore, ioc(EF), async
-            ((Task) this.Handle((dynamic) @event)).Wait();
-            var r = _context.SaveChangesAsync().Result;
+            await this.Handle((dynamic) @event);
+            await _context.SaveChangesAsync();
         }
 
         private async Task Apply(Guid id, Action<GameDetails> action)
