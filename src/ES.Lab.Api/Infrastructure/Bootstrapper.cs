@@ -27,7 +27,7 @@ namespace ES.Lab.Api.Infrastructure
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
             //Data context
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Configuration>());
-            cb.RegisterType<ProjectionContext>().AsImplementedInterfaces();
+            cb.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
             return new AutofacWebApiDependencyResolver(cb.Build());
         }
 

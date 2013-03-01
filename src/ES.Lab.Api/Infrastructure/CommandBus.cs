@@ -17,6 +17,6 @@ namespace ES.Lab.Api.Infrastructure
         {
             //TODO fire and forget
             _applicationService.HandleAsync(command).Wait();
-        } 
+        }
     }
 }

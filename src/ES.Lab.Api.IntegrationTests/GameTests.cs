@@ -77,7 +77,7 @@ namespace ES.Lab.Api.IntegrationTests
         public void EndToEnd()
         {
             var createGamerequest = CreateRequest
-                ("api/Game", MediaType.Json, HttpMethod.Post, new { name = "AFabGame", firstTo = 1 },
+                ("api/Game", MediaType.Json, HttpMethod.Post, new { name = "GameAsync", firstTo = 1 },
                 new JsonMediaTypeFormatter(), "test@jayway.com", "eslab");
 
             var id = string.Empty;
@@ -99,12 +99,11 @@ namespace ES.Lab.Api.IntegrationTests
             Send(joinGamerequest, g => { });
             Send(choicePlayer1Request, g => { });
             Send(choicePlayer2Request, g => { });
-
             Send(gameRequest, r =>
                                   {
                                       var gd = r.Content.ReadAsAsync<GameDetails>().Result;
                                       Assert.AreEqual(1, gd.Rounds.Count());
-                                      Assert.AreEqual("AFabGame", gd.Title);
+                                      Assert.AreEqual("GameAsync", gd.Title);
                                       Assert.AreEqual("test2@jayway.com", gd.WinnerId);
                                       Assert.AreEqual(HttpStatusCode.OK, r.StatusCode);
                                   }

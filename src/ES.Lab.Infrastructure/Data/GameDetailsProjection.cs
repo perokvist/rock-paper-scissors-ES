@@ -56,7 +56,6 @@ namespace ES.Lab.Infrastructure.Data
         {
             //TODO multitenent eventstore, ioc(EF), async
             await this.Handle((dynamic) @event);
-            await _context.SaveChangesAsync();
         }
 
         private async Task Apply(Guid id, Action<GameDetails> action)

@@ -10,10 +10,12 @@ namespace ES.Lab.Infrastructure.Data
     public class UnitOfWorkEventListner : IEventListner
     {
         private readonly IEnumerable<IProjection> _listerners;
+        private readonly IProjectionContext _context;
 
-        public UnitOfWorkEventListner(IEnumerable<IProjection> listerners)
+        public UnitOfWorkEventListner(IEnumerable<IProjection> listerners, IProjectionContext context)
         {
             _listerners = listerners;
+            _context = context;
         }
 
         public async Task ReceiveAsync(IEnumerable<IEvent> events)
@@ -22,10 +24,10 @@ namespace ES.Lab.Infrastructure.Data
             {
                 foreach (var projection in _listerners)
                 {
-                    //TODO save and not wait
-                    projection.WhenAsync(@event).Wait();
+                    await projection.WhenAsync(@event);
                 }
             }
+            await _context.SaveChangesAsync();
         }
 
     }
