@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 using ES.Lab.Commands;
 using ES.Lab.Domain;
 using ES.Lab.Events;
@@ -9,7 +10,6 @@ using ES.Lab.Read;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
-using Treefort.Common.Extensions;
 using Treefort.Events;
 using Treefort.Commanding;
 using Treefort.Infrastructure;
@@ -62,7 +62,6 @@ namespace ES.Lab.IntegrationTests
         {
             //Arrange
             _details = A.Fake<IProjection>();
-            _details.CallsTo(gd => gd.WhenAsync(null)).WithAnyArguments().Returns(Task.Factory.StartNew(() => { }));
 
             var appservice = _appserviceFactory();
 
@@ -79,14 +78,12 @@ namespace ES.Lab.IntegrationTests
         {
             //Arrange
             _details = A.Fake<IProjection>();
-            _details.CallsTo(gd => gd.WhenAsync(null)).WithAnyArguments().Returns(Task.Factory.StartNew(() => { }));
             _openGames = A.Fake<IProjection>();
-            _openGames.CallsTo(og => og.WhenAsync(null)).WithAnyArguments().Returns(Task.Factory.StartNew(() => { }));
 
             var id = Guid.NewGuid();
 
             //Act, Assert
-            PlayGame(d => _details.CallsTo(gd => gd.WhenAsync((GameStartedEvent)null)).WithAnyArguments().MustHaveHappened(Repeated.Exactly.Times(3)),
+            PlayGame(d => _details.CallsTo(gd => gd.WhenAsync(null)).WithAnyArguments().MustHaveHappened(Repeated.Exactly.Times(3)),
                 new CreateGameCommand(id, string.Empty, "test", 1),
                 new JoinGameCommand(id, "tester@hotmail.com")
                 );
@@ -137,11 +134,28 @@ namespace ES.Lab.IntegrationTests
             PlayGame(d => Assert.AreEqual(4, d.Rounds.Count()), commands.ToArray());
         }
 
+        
+
         private void PlayGame(Action<GameDetails> assert, params ICommand[] commands)
         {
             var appservice = _appserviceFactory();
-            commands.ForEach(c => appservice.HandleAsync(c).Wait());
+            commands.ForEach(c => appservice.HandleAsync(c));
             assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == commands.First().AggregateId));
         }
+
+            
+        
     }
+
+    
+    public class ProjectionConfigurator : FakeConfigurator<IProjection>
+    {
+        public override void ConfigureFake(IProjection fakeObject)
+        {
+            fakeObject.CallsTo(x => x.WhenAsync(null)).WithAnyArguments().Returns(Task.Run(() => {  }));
+        }
+    }
+
+    
+
 }
