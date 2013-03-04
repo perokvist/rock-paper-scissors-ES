@@ -9,6 +9,16 @@ namespace ES.Lab.Infrastructure.Data.Events
 
     public class Event : IEvent
     {
+        protected Event()
+        {
+            
+        }
+
+        public Event(string json)
+        {
+            this.Json = json;
+        }
+
         public string Json { get; set; }
     }
 }

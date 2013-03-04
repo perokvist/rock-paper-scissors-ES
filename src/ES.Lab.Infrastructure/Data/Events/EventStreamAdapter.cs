@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Newtonsoft.Json;
+using System.Linq;
 using Treefort.Events;
 
 namespace ES.Lab.Infrastructure.Data.Events
@@ -16,7 +17,7 @@ namespace ES.Lab.Infrastructure.Data.Events
         {
             foreach (var @event in collection)
             {
-                _eventStream.Events.Add((Event)@event);
+                _eventStream.Events.Add(new Event(@event.ToJson()));
             }
         }
 
@@ -33,7 +34,7 @@ namespace ES.Lab.Infrastructure.Data.Events
 
         public void Add(IEvent item)
         {
-            _eventStream.Events.Add((Event)item);
+            _eventStream.Events.Add(new Event(item.ToJson()));
         }
 
         public void Clear()
