@@ -22,12 +22,16 @@ namespace ES.Lab.Api.Infrastructure
             RegisterCoreDependencies(cb);
             RegisterSecurity(cb);
             EventProjections(cb);
-            //TODO see notes in AppService
+
+
+            //AppService - TODO see notes in AppService
             cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
+            //Web Api
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
             //Data context
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Configuration>());
             cb.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
+            
             return new AutofacWebApiDependencyResolver(cb.Build());
         }
 
@@ -36,13 +40,13 @@ namespace ES.Lab.Api.Infrastructure
             cb.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly(),
                                      System.Reflection.Assembly.GetAssembly(typeof (IApplicationService)),
                                      System.Reflection.Assembly.GetAssembly(typeof(IProjectionContext)))
-                .Except<InMemoryEventStore>()
-                .Except<DelegatingEventStore>()
-                .Except<GenericAuthenticationService>()
-                .Except<GenericRoleProvider>()
-                .Except<InMemoryProjectionContext>()
-                .Except<ProjectionContext>()
-                .Except<EventListner>()
+                .Except<InMemoryEventStore>() //Manual config
+                .Except<DelegatingEventStore>() //Manual config
+                .Except<GenericAuthenticationService>() //Manual config
+                .Except<GenericRoleProvider>() //Manual config
+                .Except<InMemoryProjectionContext>() //Remove to use EF context
+                .Except<ProjectionContext>() //Manual config
+                .Except<EventListner>() // Remove default to favor UoWEventListner
                 .PreserveExistingDefaults()
                 .AsImplementedInterfaces();
         }

@@ -52,7 +52,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\UnitOfWorkEventListner.cs" />
+    <Compile Include="Data\EventStore.cs" />
+    <Compile Include="Data\Events\EventContext.cs" />
+    <Compile Include="Data\Events\EventStreamAdapter.cs" />
+    <Compile Include="Data\UnitOfWorkEventListener.cs" />
     <Compile Include="Data\GameDetailsProjection.cs" />
     <Compile Include="Data\GameViews.cs" />
     <Compile Include="Data\IgnoreNonApplicableEventsAsync.cs" />
