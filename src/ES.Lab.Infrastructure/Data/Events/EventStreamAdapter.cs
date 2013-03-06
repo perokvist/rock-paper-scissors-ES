@@ -1,29 +1,38 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 using System.Linq;
 using Treefort.Events;
 
 namespace ES.Lab.Infrastructure.Data.Events
 {
-    public class EventStreamAdapter : IEventStream
+    public class EventStreamAdapter : Collection<IEvent>, IEventStream
     {
         private readonly EventStream _eventStream;
 
         public EventStreamAdapter(EventStream eventStream)
         {
             _eventStream = eventStream;
+            this.AddRange(_eventStream.Events
+                .Select(e => JsonConvert.DeserializeObject(e.Json, e.Type))
+                .Cast<IEvent>());
         }
 
-        public void AddRange(System.Collections.Generic.IEnumerable<IEvent> collection)
+        protected override void InsertItem(int index, IEvent item)
         {
-            foreach (var @event in collection)
-            {
-                _eventStream.Events.Add(new Event(@event.ToJson()));
-            }
+            base.InsertItem(index, item);
+            _eventStream.Events.Add(new Event(item.ToJson(), item.GetType()));
+        }
+
+        protected override void SetItem(int index, IEvent item)
+        {
+            base.SetItem(index, item);
+            _eventStream.Events.Add(new Event(item.ToJson(), item.GetType()));
         }
 
         public long EventCount
         {
-            get { return _eventStream.Events.Count; }
+            get { return Count; }
         }
 
         public long Version
@@ -32,49 +41,14 @@ namespace ES.Lab.Infrastructure.Data.Events
             set { _eventStream.Version = value; }
         }
 
-        public void Add(IEvent item)
+        public void AddRange(IEnumerable<IEvent> collection)
         {
-            _eventStream.Events.Add(new Event(item.ToJson()));
-        }
-
-        public void Clear()
-        {
-            _eventStream.Events.Clear();
-        }
-
-        public bool Contains(IEvent item)
-        {
-            return _eventStream.Events.Contains((Event)item);
-        }
-
-        public void CopyTo(IEvent[] array, int arrayIndex)
-        {
-            _eventStream.Events.CopyTo((Event[])array, arrayIndex);
-        }
-
-        public int Count
-        {
-            get { return _eventStream.Events.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return _eventStream.Events.IsReadOnly; }
-        }
-
-        public bool Remove(IEvent item)
-        {
-            return _eventStream.Events.Remove((Event)item);
-        }
-
-        public System.Collections.Generic.IEnumerator<IEvent> GetEnumerator()
-        {
-            return _eventStream.Events.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _eventStream.Events.GetEnumerator();
+            var i = 0;
+            foreach (var @event in collection)
+            {
+                SetItem(i, @event);
+                i++;
+            }
         }
     }
 }

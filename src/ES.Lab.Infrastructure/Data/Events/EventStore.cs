@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Treefort.Events;
 
 namespace ES.Lab.Infrastructure.Data.Events
@@ -17,13 +19,18 @@ namespace ES.Lab.Infrastructure.Data.Events
 
         public IEventStream LoadEventStream(System.Guid entityId)
         {
-            //TODO async + bootstappering , migration... event type deserialize
-            return _adapterFactory(_eventContext.Streams.Single(e => e.AggregateId == entityId));
+            //TODO async + bootstappering , migration...
+            var stream = _eventContext.Streams.SingleOrDefault(e => e.AggregateId == entityId) ??
+                         new EventStream() { Events = new Collection<Event>()};
+            return _adapterFactory(stream);
         }
 
-        public async System.Threading.Tasks.Task StoreAsync(System.Guid entityId, long version, System.Collections.Generic.IEnumerable<IEvent> events)
+        public async Task StoreAsync(System.Guid entityId, long version, System.Collections.Generic.IEnumerable<IEvent> events)
         {
-            var adapter = _adapterFactory(_eventContext.Streams.Add(new EventStream() { AggregateId = entityId, Version = version }));
+            var stream = _eventContext.Streams.SingleOrDefault(s => s.AggregateId == entityId) ??
+                         _eventContext.Streams.Add(new EventStream() {AggregateId = entityId});
+            var adapter = _adapterFactory(stream);
+            adapter.Version = version;
             adapter.AddRange(events);
             await _eventContext.SaveChangesAsync();
         }
