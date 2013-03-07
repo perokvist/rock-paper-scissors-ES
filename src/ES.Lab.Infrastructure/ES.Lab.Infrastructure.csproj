@@ -32,11 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -49,23 +51,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Treefort, Version=0.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Treefort, Version=0.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Treefort.0.0.6\lib\net45\Treefort.dll</HintPath>
+      <HintPath>..\packages\Treefort.0.0.7\lib\net45\Treefort.dll</HintPath>
+    </Reference>
+    <Reference Include="Treefort.EntityFramework">
+      <HintPath>..\packages\Treefort.EntityFramework.0.0.1-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Events\Event.cs" />
-    <Compile Include="Data\Events\EventStore.cs" />
-    <Compile Include="Data\Events\EventContext.cs" />
-    <Compile Include="Data\Events\EventStream.cs" />
-    <Compile Include="Data\Events\EventStreamAdapter.cs" />
-    <Compile Include="Data\Events\IEventContext.cs" />
     <Compile Include="Data\UnitOfWorkEventListener.cs" />
     <Compile Include="Data\GameDetailsProjection.cs" />
     <Compile Include="Data\GameViews.cs" />
-    <Compile Include="Data\IgnoreNonApplicableEventsAsync.cs" />
-    <Compile Include="Data\InMemoryDbSet.cs" />
     <Compile Include="Data\InMemoryProjectionContext.cs" />
     <Compile Include="Data\OpenGamesProjection.cs" />
     <Compile Include="Data\ProjectionContext.cs" />
@@ -76,7 +73,7 @@
       <DependentUpon>201303070855368_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="EventMigrations\Configuration.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="JsonConverterService.cs" />
     <Compile Include="ProjectionMigrations\201303070856352_Initial.cs" />
     <Compile Include="ProjectionMigrations\201303070856352_Initial.Designer.cs">
       <DependentUpon>201303070856352_Initial.cs</DependentUpon>

@@ -147,9 +147,13 @@
       <Private>True</Private>
       <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
-    <Reference Include="Treefort, Version=0.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Treefort, Version=0.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Treefort.0.0.6\lib\net45\Treefort.dll</HintPath>
+      <HintPath>..\packages\Treefort.0.0.7\lib\net45\Treefort.dll</HintPath>
+    </Reference>
+    <Reference Include="Treefort.EntityFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Treefort.EntityFramework.0.0.1-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>

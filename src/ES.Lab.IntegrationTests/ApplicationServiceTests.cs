@@ -35,8 +35,8 @@ namespace ES.Lab.IntegrationTests
 
             var eventStoreFactory = new Lazy<IEventStore>(() =>
                                               {
-                                                  var eventListener = new EventListner(new List<IProjection> { _details, _openGames });
-                                                  return new DelegatingEventStore(new InMemoryEventStore(), new List<IEventListner> { eventListener });
+                                                  var eventListener = new EventListener(new List<IProjection> { _details, _openGames });
+                                                  return new DelegatingEventStore(new InMemoryEventStore(() => new InMemoryEventStream()), new List<IEventListener> { eventListener });
                                               });
 
             _appserviceFactory = () => new ApplicationService<Game>(eventStoreFactory.Value);

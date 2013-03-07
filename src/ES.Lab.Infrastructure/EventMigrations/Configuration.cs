@@ -5,7 +5,7 @@ namespace ES.Lab.Infrastructure.EventMigrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    public class Configuration : DbMigrationsConfiguration<ES.Lab.Infrastructure.Data.Events.EventContext>
+    public class Configuration : DbMigrationsConfiguration<Treefort.EntityFramework.Eventing.EventContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace ES.Lab.Infrastructure.EventMigrations
             MigrationsDirectory = @"EventMigrations";
         }
 
-        protected override void Seed(ES.Lab.Infrastructure.Data.Events.EventContext context)
+        protected override void Seed(Treefort.EntityFramework.Eventing.EventContext context)
         {
             //  This method will be called after migrating to the latest version.
 

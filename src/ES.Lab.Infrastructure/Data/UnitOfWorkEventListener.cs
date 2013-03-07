@@ -7,7 +7,7 @@ using Treefort.Read;
 
 namespace ES.Lab.Infrastructure.Data
 {
-    public class UnitOfWorkEventListener : IEventListner
+    public class UnitOfWorkEventListener : IEventListener
     {
         private readonly IEnumerable<IProjection> _listerners;
         private readonly IProjectionContext _context;

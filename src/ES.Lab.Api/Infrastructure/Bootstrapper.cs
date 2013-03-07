@@ -8,10 +8,10 @@ using ES.Lab.Domain;
 using ES.Lab.Infrastructure.Data;
 using ES.Lab.Api.Infrastructure.Security;
 using Treefort;
+using Treefort.EntityFramework.Eventing;
 using Treefort.Events;
 using Treefort.Infrastructure;
 using Treefort.Read;
-using ES.Lab.Infrastructure.Data.Events;
 
 namespace ES.Lab.Api.Infrastructure
 {
@@ -24,7 +24,6 @@ namespace ES.Lab.Api.Infrastructure
             RegisterSecurity(cb);
             EventProjections(cb);
 
-
             //AppService - TODO see notes in AppService
             cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
             //Web Api
@@ -32,7 +31,7 @@ namespace ES.Lab.Api.Infrastructure
             //Data contexts
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Lab.Infrastructure.ProjectionMigrations.Configuration>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EventContext, Lab.Infrastructure.EventMigrations.Configuration>());
-
+            //DbConfiguration.SetConfiguration 
             cb.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
             cb.RegisterType<EventContext>().AsImplementedInterfaces().InstancePerApiRequest();
 
@@ -51,7 +50,7 @@ namespace ES.Lab.Api.Infrastructure
                 .Except<InMemoryProjectionContext>() //Remove to use EF context
                 .Except<ProjectionContext>() //Manual config
                 .Except<EventContext>() //Manual config
-                .Except<EventListner>() // Remove default to favor UoWEventListner
+                .Except<EventListener>() // Remove default to favor UoWEventListner
                 .PreserveExistingDefaults()
                 .AsImplementedInterfaces();
         }
@@ -63,7 +62,7 @@ namespace ES.Lab.Api.Infrastructure
                 .SingleInstance();
 
             cb.RegisterDecorator<IEventStore>(
-                (c, inner) => new DelegatingEventStore(inner, c.Resolve<IEnumerable<IEventListner>>()),
+                (c, inner) => new DelegatingEventStore(inner, c.Resolve<IEnumerable<IEventListener>>()),
                 fromKey: "implementor");
             
         }

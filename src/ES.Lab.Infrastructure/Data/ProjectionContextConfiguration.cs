@@ -1,10 +1,13 @@
-﻿namespace ES.Lab.Infrastructure.Data
+﻿using System.Data.Entity.Config;
+
+namespace ES.Lab.Infrastructure.Data
 {
     //public class ProjectionContextConfiguration : DbConfiguration
     //{
     //    public ProjectionContextConfiguration()
     //    {
-    //        base.SetDatabaseInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Configuration>());
+    //        base.AddDependencyResolver();
+    //        //base.SetDatabaseInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Configuration>());
     //    }
     //}
 }
