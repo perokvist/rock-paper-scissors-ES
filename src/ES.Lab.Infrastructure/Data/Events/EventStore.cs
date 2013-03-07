@@ -19,7 +19,7 @@ namespace ES.Lab.Infrastructure.Data.Events
 
         public IEventStream LoadEventStream(System.Guid entityId)
         {
-            //TODO async + bootstappering , migration...
+            //TODO async + bootstappering , migration... move to treefort
             var stream = _eventContext.Streams.SingleOrDefault(e => e.AggregateId == entityId) ??
                          new EventStream() { Events = new Collection<Event>()};
             return _adapterFactory(stream);

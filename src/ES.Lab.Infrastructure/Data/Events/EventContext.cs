@@ -1,27 +1,18 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using Treefort.Events;
+
 namespace ES.Lab.Infrastructure.Data.Events
 {
     public class EventContext : DbContext, IEventContext
     {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EventStream>()
+             .HasKey(es => es.AggregateId);
+            modelBuilder.Entity<Event>()
+                .HasKey(e => e.Id).Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+        }
+
         public IDbSet<EventStream> Streams { get; set; }
-    }
-
-    public class Event : IEvent
-    {
-        protected Event()
-        {
-            
-        }
-
-        public Event(string json, Type type)
-        {
-            this.Json = json;
-            Type = type;
-        }
-
-        public string Json { get; set; }
-        public Type Type { get; set; }
     }
 }

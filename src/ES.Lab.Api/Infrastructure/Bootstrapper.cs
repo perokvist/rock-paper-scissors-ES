@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -9,8 +10,8 @@ using ES.Lab.Api.Infrastructure.Security;
 using Treefort;
 using Treefort.Events;
 using Treefort.Infrastructure;
-using ES.Lab.Infrastructure.Migrations;
 using Treefort.Read;
+using ES.Lab.Infrastructure.Data.Events;
 
 namespace ES.Lab.Api.Infrastructure
 {
@@ -28,10 +29,13 @@ namespace ES.Lab.Api.Infrastructure
             cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
             //Web Api
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
-            //Data context
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Configuration>());
+            //Data contexts
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Lab.Infrastructure.ProjectionMigrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<EventContext, Lab.Infrastructure.EventMigrations.Configuration>());
+
             cb.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
-            
+            cb.RegisterType<EventContext>().AsImplementedInterfaces().InstancePerApiRequest();
+
             return new AutofacWebApiDependencyResolver(cb.Build());
         }
 
@@ -46,6 +50,7 @@ namespace ES.Lab.Api.Infrastructure
                 .Except<GenericRoleProvider>() //Manual config
                 .Except<InMemoryProjectionContext>() //Remove to use EF context
                 .Except<ProjectionContext>() //Manual config
+                .Except<EventContext>() //Manual config
                 .Except<EventListner>() // Remove default to favor UoWEventListner
                 .PreserveExistingDefaults()
                 .AsImplementedInterfaces();

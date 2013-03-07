@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using System.Linq;
 using Treefort.Events;
+using System;
 
 namespace ES.Lab.Infrastructure.Data.Events
 {
@@ -14,7 +15,7 @@ namespace ES.Lab.Infrastructure.Data.Events
         {
             _eventStream = eventStream;
             this.AddRange(_eventStream.Events
-                .Select(e => JsonConvert.DeserializeObject(e.Json, e.Type))
+                .Select(e => JsonConvert.DeserializeObject(e.Json, Type.GetType(e.Type)))
                 .Cast<IEvent>());
         }
 

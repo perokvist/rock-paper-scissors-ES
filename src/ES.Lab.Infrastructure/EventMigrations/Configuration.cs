@@ -1,18 +1,19 @@
-namespace ES.Lab.Infrastructure.Migrations
+namespace ES.Lab.Infrastructure.EventMigrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    public class Configuration : DbMigrationsConfiguration<ES.Lab.Infrastructure.Data.ProjectionContext>
+    public class Configuration : DbMigrationsConfiguration<ES.Lab.Infrastructure.Data.Events.EventContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            MigrationsDirectory = @"EventMigrations";
         }
 
-        protected override void Seed(ES.Lab.Infrastructure.Data.ProjectionContext context)
+        protected override void Seed(ES.Lab.Infrastructure.Data.Events.EventContext context)
         {
             //  This method will be called after migrating to the latest version.
 

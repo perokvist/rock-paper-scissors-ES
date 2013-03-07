@@ -1,4 +1,4 @@
-namespace ES.Lab.Infrastructure.Migrations
+namespace ES.Lab.Infrastructure.ProjectionMigrations
 {
     using System;
     using System.Data.Entity.Migrations;

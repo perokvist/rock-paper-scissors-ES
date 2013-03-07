@@ -7,6 +7,6 @@ namespace ES.Lab.Infrastructure.Data.Events
     {
         public long Version { get; set; }
         public Guid AggregateId { get; set; }
-        public ICollection<Event> Events { get; set; } 
+        public virtual ICollection<Event> Events { get; set; } 
     }
 }
