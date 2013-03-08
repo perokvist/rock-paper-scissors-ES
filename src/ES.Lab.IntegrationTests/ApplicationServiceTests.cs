@@ -5,11 +5,13 @@ using Castle.Core.Internal;
 using ES.Lab.Commands;
 using ES.Lab.Domain;
 using ES.Lab.Events;
+using ES.Lab.Infrastructure;
 using ES.Lab.Infrastructure.Data;
 using ES.Lab.Read;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
+using Treefort.EntityFramework.Eventing;
 using Treefort.Events;
 using Treefort.Commanding;
 using Treefort.Infrastructure;
@@ -29,15 +31,15 @@ namespace ES.Lab.IntegrationTests
         [SetUp]
         public void Setup()
         {
-            //_projectionContext = new InMemoryProjectionContext(); //InMemory Version
-            _projectionContext = new ProjectionContext();
+            _projectionContext = new ProjectionContext(); //Possible to swap to InMemory, but DbAsync trouble
             _details = new GameDetailsProjection(_projectionContext);
             _openGames = new OpenGamesProjection(_projectionContext);
-
             var eventStoreFactory = new Lazy<IEventStore>(() =>
                                               {
-                                                  var eventListener = new EventListener(new List<IProjection> { _details, _openGames });
-                                                  return new DelegatingEventStore(new InMemoryEventStore(() => new InMemoryEventStream()), new List<IEventListener> { eventListener });
+                                                  var eventListener = new UnitOfWorkEventListener(new List<IProjection> { _details, _openGames }, _projectionContext);
+                                                  return new DelegatingEventStore(new EventStore(
+                                                      new EventContext(), x=> new EventStreamAdapter(x, new JsonConverterService())), 
+                                                      new List<IEventListener> { eventListener });
                                               });
 
             _appserviceFactory = () => new ApplicationService<Game>(eventStoreFactory.Value);
@@ -90,7 +92,8 @@ namespace ES.Lab.IntegrationTests
                 );
         }
 
-        [Test, Ignore("IDbAsyncEnumerable trouble")]
+        //[Test, Ignore("IDbAsyncEnumerable trouble")]
+        [Test]
         public void EndToEndGamePlay()
         {
             //Arrange
@@ -113,7 +116,8 @@ namespace ES.Lab.IntegrationTests
             
         }
 
-        [Test, Ignore("IDbAsyncEnumerable trouble")]
+        //[Test, Ignore("IDbAsyncEnumerable trouble")]
+        [Test]
         public void DrawShouldAddRound()
         {
             //Arrange
@@ -137,10 +141,14 @@ namespace ES.Lab.IntegrationTests
 
         
 
-        private void PlayGame(Action<GameDetails> assert, params ICommand[] commands)
+        private async void PlayGame(Action<GameDetails> assert, params ICommand[] commands)
         {
             var appservice = _appserviceFactory();
-            commands.ForEach(c => appservice.HandleAsync(c));
+            foreach (var command in commands)
+            {
+                await appservice.HandleAsync(command);
+            }
+            //commands.ForEach(c => appservice.HandleAsync(c).Wait());
             var id = commands.First().AggregateId;
             assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == id));
         }
