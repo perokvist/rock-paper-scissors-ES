@@ -31,7 +31,7 @@ namespace ES.Lab.Api.Infrastructure
             //Data contexts
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Lab.Infrastructure.ProjectionMigrations.Configuration>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EventContext, Lab.Infrastructure.EventMigrations.Configuration>());
-            //DbConfiguration.SetConfiguration 
+            //TODO DbConfiguration.SetConfiguration for multitenant
             cb.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
             cb.RegisterType<EventContext>().AsImplementedInterfaces().InstancePerApiRequest();
 

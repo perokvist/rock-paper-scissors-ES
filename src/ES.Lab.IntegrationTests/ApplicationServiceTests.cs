@@ -29,7 +29,8 @@ namespace ES.Lab.IntegrationTests
         [SetUp]
         public void Setup()
         {
-            _projectionContext = new InMemoryProjectionContext();
+            //_projectionContext = new InMemoryProjectionContext(); //InMemory Version
+            _projectionContext = new ProjectionContext();
             _details = new GameDetailsProjection(_projectionContext);
             _openGames = new OpenGamesProjection(_projectionContext);
 
@@ -140,7 +141,8 @@ namespace ES.Lab.IntegrationTests
         {
             var appservice = _appserviceFactory();
             commands.ForEach(c => appservice.HandleAsync(c));
-            assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == commands.First().AggregateId));
+            var id = commands.First().AggregateId;
+            assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == id));
         }
 
             
