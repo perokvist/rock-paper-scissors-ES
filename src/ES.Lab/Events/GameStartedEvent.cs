@@ -12,9 +12,9 @@ namespace ES.Lab.Events
             PlayerTwoId = playerTwoId;
         }
 
-        public Guid GameId { get; private set; }
-        public string PlayerOneId { get; private set; }
-        public string PlayerTwoId { get; private set; }
+        public Guid GameId { get; set; }
+        public string PlayerOneId { get; set; }
+        public string PlayerTwoId { get; set; }
 
     }
 }

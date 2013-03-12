@@ -61,9 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Treefort.0.0.7\lib\net45\Treefort.dll</HintPath>
     </Reference>
-    <Reference Include="Treefort.EntityFramework, Version=0.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Treefort.EntityFramework, Version=0.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Treefort.EntityFramework.0.0.3-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
+      <HintPath>..\packages\Treefort.EntityFramework.0.0.6-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

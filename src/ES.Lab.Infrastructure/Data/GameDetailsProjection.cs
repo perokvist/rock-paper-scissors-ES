@@ -54,7 +54,6 @@ namespace ES.Lab.Infrastructure.Data
 
         async Task IProjection.WhenAsync(IEvent @event)
         {
-            //TODO multitenent eventstore, ioc(EF), async
             await this.Handle((dynamic) @event);
         }
 

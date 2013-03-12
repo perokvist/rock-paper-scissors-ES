@@ -15,11 +15,11 @@ namespace ES.Lab.Events
             Created = utcNow;
         }
 
-        public Guid GameId { get; private set; }
-        public string PlayerId { get; private set; }
-        public string Title { get; private set; }
-        public int FirstTo { get; private set; }
-        public DateTime Created { get; private set; }
+        public Guid GameId { get; set; }
+        public string PlayerId { get; set; }
+        public string Title { get; set; }
+        public int FirstTo { get; set; }
+        public DateTime Created { get; set; }
 
     }
 }

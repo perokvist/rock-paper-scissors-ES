@@ -102,7 +102,7 @@ namespace ES.Lab.IntegrationTests
             var playerTwo = "player2@jayway.com";
             var commands = new List<ICommand>
                                {
-                                   new CreateGameCommand(gameId, playerOne, "test", 3),
+                                   new CreateGameCommand(gameId, playerOne, "test2", 3),
                                    new JoinGameCommand(gameId, playerTwo),
                                    new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
                                    new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors),
@@ -126,7 +126,7 @@ namespace ES.Lab.IntegrationTests
             var playerTwo = "player2@jayway.com";
             var commands = new List<ICommand>
                                {
-                                   new CreateGameCommand(gameId, playerOne, "test", 3),
+                                   new CreateGameCommand(gameId, playerOne, "test4", 3),
                                    new JoinGameCommand(gameId, playerTwo),
                                    new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
                                    new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors),
@@ -144,19 +144,16 @@ namespace ES.Lab.IntegrationTests
         private async void PlayGame(Action<GameDetails> assert, params ICommand[] commands)
         {
             var appservice = _appserviceFactory();
+            
             foreach (var command in commands)
             {
                 await appservice.HandleAsync(command);
             }
-            //commands.ForEach(c => appservice.HandleAsync(c).Wait());
+
             var id = commands.First().AggregateId;
             assert(_projectionContext.GameDetails.SingleOrDefault(x => x.GameId == id));
         }
-
-            
-        
     }
-
     
     public class ProjectionConfigurator : FakeConfigurator<IProjection>
     {
@@ -165,7 +162,4 @@ namespace ES.Lab.IntegrationTests
             fakeObject.CallsTo(x => x.WhenAsync(null)).WithAnyArguments().Returns(Task.Run(() => {  }));
         }
     }
-
-    
-
 }

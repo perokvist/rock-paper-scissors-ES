@@ -15,9 +15,9 @@ namespace ES.Lab.Events
             Choice = choice;
         }
 
-        public string PlayerId { get; private set; }
-        public Guid GameId { get; private set; }
-        public int Round { get; private set; }
-        public Choice Choice { get; private set; }
+        public string PlayerId { get; set; }
+        public Guid GameId { get; set; }
+        public int Round { get; set; }
+        public Choice Choice { get; set; }
     }
 }

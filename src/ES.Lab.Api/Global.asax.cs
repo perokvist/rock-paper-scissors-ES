@@ -19,12 +19,15 @@ namespace ES.Lab.Api
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            //SignalR
+            RouteTable.Routes.MapHubs(); // Needs to be first
+
             //Web Api
             Start(GlobalConfiguration.Configuration);
             //MVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+           
         }
 
         public static void Start(HttpConfiguration configuration)

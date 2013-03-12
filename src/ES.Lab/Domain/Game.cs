@@ -109,6 +109,7 @@ namespace ES.Lab.Domain
 
         public void Handle(RoundStartedEvent @event)
         {
+            id = @event.GameId;
             round = @event.Round;
             playerOne.CurrentChoice = Choice.None;
             playerTwo.CurrentChoice = Choice.None;

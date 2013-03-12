@@ -3,15 +3,16 @@ using System.Configuration;
 using System.Data.Entity;
 using Autofac;
 using Autofac.Integration.WebApi;
-using System.Web.Http.Dependencies;
 using ES.Lab.Domain;
 using ES.Lab.Infrastructure.Data;
 using ES.Lab.Api.Infrastructure.Security;
+using Microsoft.AspNet.SignalR;
 using Treefort;
 using Treefort.EntityFramework.Eventing;
 using Treefort.Events;
 using Treefort.Infrastructure;
 using Treefort.Read;
+using IDependencyResolver = System.Web.Http.Dependencies.IDependencyResolver;
 
 namespace ES.Lab.Api.Infrastructure
 {
@@ -20,52 +21,29 @@ namespace ES.Lab.Api.Infrastructure
         public static IDependencyResolver Start()
         {
             var cb = new ContainerBuilder();
-            RegisterCoreDependencies(cb);
+            cb.RegisterModule<InfrastructureModule>();
+            cb.RegisterModule<TreefortEntityFrameworkModule>();
+            cb.RegisterModule<TreefortModule>();
+
+
+            cb
+                .RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly())
+                .Except<GenericRoleProvider>()
+                .Except<GenericAuthenticationService>()
+                .AsImplementedInterfaces();
+            
             RegisterSecurity(cb);
-            EventProjections(cb);
 
             //AppService - TODO see notes in AppService
-            cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
+            cb.RegisterType<TempApplicationService<Game>>().AsImplementedInterfaces();
             //Web Api
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
-            //Data contexts
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Lab.Infrastructure.ProjectionMigrations.Configuration>());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<EventContext, Lab.Infrastructure.EventMigrations.Configuration>());
-            //TODO DbConfiguration.SetConfiguration for multitenant
-            cb.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
-            cb.RegisterType<EventContext>().AsImplementedInterfaces().InstancePerApiRequest();
+            //SignalR
+            cb.RegisterInstance(GlobalHost.ConnectionManager).AsImplementedInterfaces().ExternallyOwned();
 
             return new AutofacWebApiDependencyResolver(cb.Build());
         }
 
-        private static void RegisterCoreDependencies(ContainerBuilder cb)
-        {
-            cb.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly(),
-                                     System.Reflection.Assembly.GetAssembly(typeof (IApplicationService)),
-                                     System.Reflection.Assembly.GetAssembly(typeof(IProjectionContext)))
-                .Except<InMemoryEventStore>() //Manual config
-                .Except<DelegatingEventStore>() //Manual config
-                .Except<GenericAuthenticationService>() //Manual config
-                .Except<GenericRoleProvider>() //Manual config
-                .Except<InMemoryProjectionContext>() //Remove to use EF context
-                .Except<ProjectionContext>() //Manual config
-                .Except<EventContext>() //Manual config
-                .Except<EventListener>() // Remove default to favor UoWEventListner
-                .PreserveExistingDefaults()
-                .AsImplementedInterfaces();
-        }
-
-        private static void EventProjections(ContainerBuilder cb)
-        {
-            cb.RegisterType<InMemoryEventStore>()
-                .Named<IEventStore>("implementor")
-                .SingleInstance();
-
-            cb.RegisterDecorator<IEventStore>(
-                (c, inner) => new DelegatingEventStore(inner, c.Resolve<IEnumerable<IEventListener>>()),
-                fromKey: "implementor");
-            
-        }
 
         private static void RegisterSecurity(ContainerBuilder cb)
         {

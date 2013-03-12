@@ -11,7 +11,7 @@ namespace ES.Lab.Events
             Round = round;
         }
 
-        public Guid GameId { get; private set; }
-        public int Round { get; private set; }
+        public Guid GameId { get; set; }
+        public int Round { get; set; }
     }
 }
