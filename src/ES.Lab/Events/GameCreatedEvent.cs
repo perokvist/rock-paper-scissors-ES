@@ -20,6 +20,6 @@ namespace ES.Lab.Events
         public string Title { get; set; }
         public int FirstTo { get; set; }
         public DateTime Created { get; set; }
-
+        public string CorrelationId { get; set; }
     }
 }

@@ -13,5 +13,6 @@ namespace ES.Lab.Events
 
         public Guid GameId { get; set; }
         public int Round { get; set; }
+        public string CorrelationId { get; set; }
     }
 }

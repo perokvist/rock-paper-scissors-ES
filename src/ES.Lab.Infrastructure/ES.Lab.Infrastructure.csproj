@@ -70,16 +70,17 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Treefort, Version=0.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Treefort, Version=0.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Treefort.0.0.7\lib\net45\Treefort.dll</HintPath>
+      <HintPath>..\packages\Treefort.0.0.8\lib\net45\Treefort.dll</HintPath>
     </Reference>
-    <Reference Include="Treefort.EntityFramework, Version=0.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Treefort.EntityFramework, Version=0.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Treefort.EntityFramework.0.0.7-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
+      <HintPath>..\packages\Treefort.EntityFramework.0.0.8-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\EventConfiguration.cs" />
     <Compile Include="Data\UnitOfWorkEventListener.cs" />
     <Compile Include="Data\GameDetailsProjection.cs" />
     <Compile Include="Data\GameViews.cs" />
@@ -88,15 +89,6 @@
     <Compile Include="Data\ProjectionContext.cs" />
     <Compile Include="Data\IProjectionContext.cs" />
     <Compile Include="Data\ProjectionContextConfiguration.cs" />
-    <Compile Include="EventMigrations\201303070855368_Initial.cs" />
-    <Compile Include="EventMigrations\201303070855368_Initial.Designer.cs">
-      <DependentUpon>201303070855368_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EventMigrations\201303121358437_Created.cs" />
-    <Compile Include="EventMigrations\201303121358437_Created.Designer.cs">
-      <DependentUpon>201303121358437_Created.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EventMigrations\Configuration.cs" />
     <Compile Include="JsonConverterService.cs" />
     <Compile Include="ProjectionMigrations\201303070856352_Initial.cs" />
     <Compile Include="ProjectionMigrations\201303070856352_Initial.Designer.cs">
@@ -119,12 +111,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EventMigrations\201303070855368_Initial.resx">
-      <DependentUpon>201303070855368_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EventMigrations\201303121358437_Created.resx">
-      <DependentUpon>201303121358437_Created.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProjectionMigrations\201303070856352_Initial.resx">
       <DependentUpon>201303070856352_Initial.cs</DependentUpon>
     </EmbeddedResource>

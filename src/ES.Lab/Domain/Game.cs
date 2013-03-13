@@ -36,7 +36,7 @@ namespace ES.Lab.Domain
                                command.PlayerId,
                                command.Title,
                                command.FirstTo,
-                               DateTime.UtcNow)
+                               DateTime.UtcNow) {CorrelationId = command.CorrelationId} //TODO move to appservice
                        };
         }
         

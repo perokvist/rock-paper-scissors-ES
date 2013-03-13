@@ -26,6 +26,8 @@
         </div>
     </header>
     @RenderBody()
+    
+    <button id="createGame" title="CreateGame">CreateGame</button>
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
@@ -48,6 +50,18 @@
 
             // Start the connection
             $.connection.hub.start().done(function () {
+                var clientId = $.connection.hub.id;
+                $('#createGame').click(function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/game',
+                        data: { "name": "webgame1", "firstTo": "3", "clientId": clientId },
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data.username);
+                        },
+                    });
+                });
             });
         });
 </script>

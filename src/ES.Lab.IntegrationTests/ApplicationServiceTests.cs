@@ -38,7 +38,7 @@ namespace ES.Lab.IntegrationTests
                                               {
                                                   var eventListener = new UnitOfWorkEventListener(new List<IProjection> { _details, _openGames }, _projectionContext);
                                                   return new DelegatingEventStore(new EventStore(
-                                                      new EventContext(), x=> new EventStreamAdapter(x, new JsonConverterService())), 
+                                                      new EventContext(), x=> new EventStreamAdapter(x, new JsonConverterService(), new AssemblyQualifiedNameTypeResolver())), 
                                                       new List<IEventListener> { eventListener });
                                               });
 

@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web.Http;
 using ES.Lab.Domain;
 using ES.Lab.Read;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Treefort.Infrastructure;
 using Treefort.EntityFramework.Eventing;
@@ -18,7 +19,7 @@ using Treefort.EntityFramework.Eventing;
 namespace ES.Lab.Api.Controllers
 {
   
-    [Authorize(Roles = "Player")]
+    [System.Web.Http.Authorize(Roles = "Player")]
     public class GameController : ApiController
     {
         private readonly ICommandBus _commandBus;
@@ -37,7 +38,8 @@ namespace ES.Lab.Api.Controllers
         {
             //TODO remove xml support
             var gameId = Guid.NewGuid();
-            var command = new CreateGameCommand(gameId, User.Identity.Name, input.Value<string>("name"), input.Value<int>("firstTo"));
+            var command = new CreateGameCommand(gameId, User.Identity.Name, 
+                input.Value<string>("name"), input.Value<int>("firstTo"), input.Value<string>("clientId"));
             await _commandBus.SendAsync(command);
             return Request.CreateResponse(HttpStatusCode.Created)
                 .Tap(r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = gameId })));

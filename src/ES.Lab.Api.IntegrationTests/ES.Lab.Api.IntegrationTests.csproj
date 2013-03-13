@@ -64,8 +64,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Treefort">
-      <HintPath>..\packages\Treefort.0.0.7\lib\net45\Treefort.dll</HintPath>
+    <Reference Include="Treefort, Version=0.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Treefort.0.0.8\lib\net45\Treefort.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
