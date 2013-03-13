@@ -27,8 +27,7 @@ namespace ES.Lab.Infrastructure.Data
                     await projection.WhenAsync(@event);
                 }
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync();
         }
-
     }
 }

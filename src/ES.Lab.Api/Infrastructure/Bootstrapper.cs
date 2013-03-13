@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics;
 using Autofac;
 using Autofac.Integration.WebApi;
 using ES.Lab.Domain;
@@ -21,10 +22,10 @@ namespace ES.Lab.Api.Infrastructure
         public static IDependencyResolver Start()
         {
             var cb = new ContainerBuilder();
+
             cb.RegisterModule<InfrastructureModule>();
             cb.RegisterModule<TreefortEntityFrameworkModule>();
             cb.RegisterModule<TreefortModule>();
-
 
             cb
                 .RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly())
@@ -35,9 +36,11 @@ namespace ES.Lab.Api.Infrastructure
             RegisterSecurity(cb);
 
             //AppService - TODO see notes in AppService
-            cb.RegisterType<TempApplicationService<Game>>().AsImplementedInterfaces();
+            cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
+                //.EnableInterfaceInterceptors();
             //Web Api
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
+
             //SignalR
             cb.RegisterInstance(GlobalHost.ConnectionManager).AsImplementedInterfaces().ExternallyOwned();
 

@@ -13,6 +13,7 @@ using ES.Lab.Domain;
 using ES.Lab.Read;
 using Newtonsoft.Json.Linq;
 using Treefort.Infrastructure;
+using Treefort.EntityFramework.Eventing;
 
 namespace ES.Lab.Api.Controllers
 {
@@ -22,11 +23,13 @@ namespace ES.Lab.Api.Controllers
     {
         private readonly ICommandBus _commandBus;
         private readonly IGameViews _gameViews;
+        private readonly IEventContext _context;
 
-        public GameController(ICommandBus commandBus, IGameViews gameViews)
+        public GameController(ICommandBus commandBus, IGameViews gameViews, IEventContext context) 
         {
             _commandBus = commandBus;
             _gameViews = gameViews;
+            _context = context;
         }
 
         [HttpPost]
@@ -35,7 +38,7 @@ namespace ES.Lab.Api.Controllers
             //TODO remove xml support
             var gameId = Guid.NewGuid();
             var command = new CreateGameCommand(gameId, User.Identity.Name, input.Value<string>("name"), input.Value<int>("firstTo"));
-            _commandBus.Send(command);
+            await _commandBus.SendAsync(command);
             return Request.CreateResponse(HttpStatusCode.Created)
                 .Tap(r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = gameId })));
         }
@@ -43,7 +46,7 @@ namespace ES.Lab.Api.Controllers
         [HttpPost, ActionName("opponent")]
         public async Task<HttpResponseMessage> JoinGame([FromUri]Guid id)
         {
-            _commandBus.Send(new JoinGameCommand(id, User.Identity.Name));
+            await _commandBus.SendAsync(new JoinGameCommand(id, User.Identity.Name));
             return Request.CreateResponse(HttpStatusCode.OK).Tap(
                     r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new {id = id})));
         }
@@ -55,7 +58,7 @@ namespace ES.Lab.Api.Controllers
             if(!Enum.TryParse(input.Value<string>("choice"), out choice))
                 throw new ArgumentException();
 
-            _commandBus.Send(new MakeChoiceCommand(id, User.Identity.Name, choice));
+            await _commandBus.SendAsync(new MakeChoiceCommand(id, User.Identity.Name, choice));
             return Request.CreateResponse(HttpStatusCode.OK).Tap(
                     r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new {id})));
         }

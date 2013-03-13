@@ -13,10 +13,10 @@ namespace ES.Lab.Api.Infrastructure
             _applicationService = applicationService;
         }
 
-        public void Send(ICommand command)
+        public async Task SendAsync(ICommand command)
         {
             //TODO fire and forget
-            _applicationService.HandleAsync(command).Wait();
+            await _applicationService.HandleAsync(command);
         }
     }
 }
