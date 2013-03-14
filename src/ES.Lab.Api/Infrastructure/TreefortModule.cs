@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using Autofac;
 using Treefort;
 using Treefort.Events;
@@ -19,8 +17,8 @@ namespace ES.Lab.Api.Infrastructure
                 .Except<InMemoryEventStream>()
                 .Except<DelegatingEventStore>()
                 .Except<EventListener>()
+                .Except<CommandRouteConfiguration>()
                 .AsImplementedInterfaces();
-
 
             //cb.RegisterType<InMemoryEventStore>()
             // .Named<IEventStore>("implementor")

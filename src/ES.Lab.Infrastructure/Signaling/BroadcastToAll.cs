@@ -15,7 +15,7 @@ namespace ES.Lab.Infrastructure.Signaling
         public async Task WhenAsync(IEvent @event)
         {
             var hub = _connectionManager.GetHubContext("BroadcastHub");
-            await hub.Clients.Client(@event.CorrelationId).something(@event);
+            await hub.Clients.Client(@event.CorrelationId.ToString()).something(@event);
         }
     }
 }

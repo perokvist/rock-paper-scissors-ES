@@ -22,7 +22,7 @@ namespace ES.Lab.IntegrationTests
 {
     public class ApplicationServiceTests
     {
-        private Func<ApplicationService<Game>> _appserviceFactory;
+        private Func<ApplicationService> _appserviceFactory;
         private IProjection _details;
         private IProjection _openGames;
         private IEventStore _store;
@@ -41,8 +41,9 @@ namespace ES.Lab.IntegrationTests
                                                       new EventContext(), x=> new EventStreamAdapter(x, new JsonConverterService(), new AssemblyQualifiedNameTypeResolver())), 
                                                       new List<IEventListener> { eventListener });
                                               });
-
-            _appserviceFactory = () => new ApplicationService<Game>(eventStoreFactory.Value);
+            var commandRouteConfiguration = new CommandRouteConfiguration();
+            ((ICommandRouteConfiguration)commandRouteConfiguration).Add<ICommand, Game>();
+            _appserviceFactory = () => new ApplicationService(eventStoreFactory.Value, commandRouteConfiguration);
         }
 
         [Test]
@@ -53,7 +54,7 @@ namespace ES.Lab.IntegrationTests
             var appservice = _appserviceFactory();
 
             //Act
-            appservice.HandleAsync(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 3)).Wait();
+            appservice.HandleAsync(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 3, Guid.NewGuid())).Wait();
 
             //Assert
             _store.CallsTo(s => s.StoreAsync(Guid.NewGuid(), 0, null))
@@ -69,7 +70,7 @@ namespace ES.Lab.IntegrationTests
             var appservice = _appserviceFactory();
 
             //Act
-            appservice.HandleAsync(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 2)).Wait();
+            appservice.HandleAsync(new CreateGameCommand(Guid.NewGuid(), string.Empty, "test", 2, Guid.NewGuid())).Wait();
 
             //Assert
             _details.CallsTo(gd => gd.WhenAsync((GameCreatedEvent)null))
@@ -87,7 +88,7 @@ namespace ES.Lab.IntegrationTests
 
             //Act, Assert
             PlayGame(d => _details.CallsTo(gd => gd.WhenAsync(null)).WithAnyArguments().MustHaveHappened(Repeated.Exactly.Times(3)),
-                new CreateGameCommand(id, string.Empty, "test", 1),
+                new CreateGameCommand(id, string.Empty, "test", 1, Guid.NewGuid()),
                 new JoinGameCommand(id, "tester@hotmail.com")
                 );
         }
@@ -102,7 +103,7 @@ namespace ES.Lab.IntegrationTests
             var playerTwo = "player2@jayway.com";
             var commands = new List<ICommand>
                                {
-                                   new CreateGameCommand(gameId, playerOne, "test2", 3),
+                                   new CreateGameCommand(gameId, playerOne, "test2", 3, Guid.NewGuid()),
                                    new JoinGameCommand(gameId, playerTwo),
                                    new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
                                    new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors),
@@ -126,7 +127,7 @@ namespace ES.Lab.IntegrationTests
             var playerTwo = "player2@jayway.com";
             var commands = new List<ICommand>
                                {
-                                   new CreateGameCommand(gameId, playerOne, "test4", 3),
+                                   new CreateGameCommand(gameId, playerOne, "test4", 3, Guid.NewGuid()),
                                    new JoinGameCommand(gameId, playerTwo),
                                    new MakeChoiceCommand(gameId, playerOne, Choice.Paper),
                                    new MakeChoiceCommand(gameId, playerTwo, Choice.Scissors),

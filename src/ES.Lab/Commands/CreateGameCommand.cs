@@ -4,7 +4,7 @@ namespace ES.Lab.Commands
 {
     public class CreateGameCommand : IGameCommand
     {
-        public CreateGameCommand(Guid entityId, string playerId, string title, int firstTo, string correlationId)
+        public CreateGameCommand(Guid entityId, string playerId, string title, int firstTo, Guid correlationId)
         {
             AggregateId = entityId;
             PlayerId = playerId;
@@ -17,6 +17,6 @@ namespace ES.Lab.Commands
         public string PlayerId { get; private set; }
         public string Title { get; private set; }
         public int FirstTo { get; private set; }
-        public string CorrelationId { get; private set; }
+        public Guid CorrelationId { get; private set; }
     }
 }

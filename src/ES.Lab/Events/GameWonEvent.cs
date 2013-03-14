@@ -14,6 +14,6 @@ namespace ES.Lab.Events
 
         public Guid GameId { get; set; }
         public string PlayerId { get; set; }
-        public string CorrelationId { get; set; }
+        public Guid CorrelationId { get; set; }
     }
 }

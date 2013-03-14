@@ -9,6 +9,7 @@ using ES.Lab.Infrastructure.Data;
 using ES.Lab.Api.Infrastructure.Security;
 using Microsoft.AspNet.SignalR;
 using Treefort;
+using Treefort.Commanding;
 using Treefort.EntityFramework.Eventing;
 using Treefort.Events;
 using Treefort.Infrastructure;
@@ -32,12 +33,15 @@ namespace ES.Lab.Api.Infrastructure
                 .Except<GenericRoleProvider>()
                 .Except<GenericAuthenticationService>()
                 .AsImplementedInterfaces();
-            
+
+            //Route commands
+            cb.Register(c => new CommandRouteConfiguration()
+                                      .Tap(config => ((ICommandRouteConfiguration)config).Add<ICommand, Game>()))
+                                      .AsImplementedInterfaces()
+                                      .SingleInstance();
+
             RegisterSecurity(cb);
 
-            //AppService - TODO see notes in AppService
-            cb.RegisterType<ApplicationService<Game>>().AsImplementedInterfaces();
-                //.EnableInterfaceInterceptors();
             //Web Api
             cb.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
 

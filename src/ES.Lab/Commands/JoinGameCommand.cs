@@ -12,6 +12,6 @@ namespace ES.Lab.Commands
 
         public string PlayerId { get; private set; }
         public Guid AggregateId { get; private set; }
-        public string CorrelationId { get; set; }
+        public Guid CorrelationId { get; set; }
     }
 }

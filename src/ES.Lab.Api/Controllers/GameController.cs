@@ -37,9 +37,9 @@ namespace ES.Lab.Api.Controllers
         public async Task<HttpResponseMessage> CreateGame(JObject input)
         {
             //TODO remove xml support
-            var gameId = Guid.NewGuid();
+                var gameId = Guid.NewGuid();
             var command = new CreateGameCommand(gameId, User.Identity.Name, 
-                input.Value<string>("name"), input.Value<int>("firstTo"), input.Value<string>("clientId"));
+                input.Value<string>("name"), input.Value<int>("firstTo"), Guid.Parse(input.Value<string>("clientId")));
             await _commandBus.SendAsync(command);
             return Request.CreateResponse(HttpStatusCode.Created)
                 .Tap(r => r.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = gameId })));
