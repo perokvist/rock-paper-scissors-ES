@@ -26,7 +26,7 @@ namespace ES.Lab.Infrastructure
             //Execute command
             var events = aggregate.Handle((dynamic)command);
             //Store events
-            _eventStore.Store(command.EntityId, eventStream.Version + 1, events);
+            _eventStore.Store(command.EntityId, eventStream.Version, events);
         }
     }
 

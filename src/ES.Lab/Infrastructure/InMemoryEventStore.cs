@@ -16,6 +16,10 @@ namespace ES.Lab.Infrastructure
         public void Store(System.Guid entityId, long version, System.Collections.Generic.IEnumerable<IEvent> events)
         {
             var eventStream = _streams.ContainsKey(entityId) ? _streams[entityId] : new InMemoryEventStream();
+
+            if (version != eventStream.Version)
+                throw new InvalidOperationException("EventStream version is old");
+            
             eventStream.Version = eventStream.Version + 1;
             eventStream.AddRange(events);
             _streams[entityId] = eventStream;
