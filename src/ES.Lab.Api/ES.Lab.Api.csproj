@@ -174,6 +174,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Treefort.EntityFramework.0.1.1-alpha\lib\net45\Treefort.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Treefort.WebApi">
+      <HintPath>..\packages\Treefort.WebApi.0.0.1\lib\net45\Treefort.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
@@ -210,19 +213,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\InfrastructureModule.cs" />
-    <Compile Include="Infrastructure\Security\BasicAuthenticationMessageHandler.cs" />
     <Compile Include="Infrastructure\Bootstrapper.cs" />
     <Compile Include="Infrastructure\CommandBus.cs" />
     <Compile Include="Infrastructure\ICommandBus.cs" />
-    <Compile Include="Infrastructure\Security\Credentials.cs" />
-    <Compile Include="Infrastructure\Security\GenericAuthenticationService.cs" />
-    <Compile Include="Infrastructure\Security\GenericRoleProvider.cs" />
-    <Compile Include="Infrastructure\Security\IAuthenticationService.cs" />
-    <Compile Include="Infrastructure\Security\IPrincipalProvider.cs" />
-    <Compile Include="Infrastructure\Security\IRoleProvider.cs" />
-    <Compile Include="Infrastructure\Security\PrincipalProvider.cs" />
     <Compile Include="Infrastructure\TreefortEntityFrameworkModule.cs" />
     <Compile Include="Infrastructure\TreefortModule.cs" />
+    <Compile Include="Infrastructure\TreefortWebApiModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,19 +1,10 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Web.Http.SelfHost;
-using ES.Lab.Api.Infrastructure.Security;
 using ES.Lab.Read;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ES.Lab.Api.Infrastructure;
-using System.Web.Http;
 
 namespace ES.Lab.Api.IntegrationTests
 {
