@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ES.Lab", "ES.Lab\ES.Lab.csproj", "{167FB8EA-873C-49F8-AF38-8B72F0257B5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ES.Lab.IntegrationTests", "ES.Lab.IntegrationTests\ES.Lab.IntegrationTests.csproj", "{E3AFA737-6CE5-424A-8DFB-48B0A2625E46}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{00450FCD-6B96-41B5-8010-387C283A5C3D}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -13,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{00450F
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ES.Lab.Api", "ES.Lab.Api\ES.Lab.Api.csproj", "{E47C3860-153F-4038-8850-B085FE192735}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ES.Lab.Api.IntegrationTests", "ES.Lab.Api.IntegrationTests\ES.Lab.Api.IntegrationTests.csproj", "{2E684AF4-755D-424A-BD23-B694C885E75A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ES.Lab.Infrastructure", "ES.Lab.Infrastructure\ES.Lab.Infrastructure.csproj", "{9998BE6F-F0E8-43BD-9D1B-A09AA3A05308}"
 EndProject
@@ -28,18 +24,10 @@ Global
 		{167FB8EA-873C-49F8-AF38-8B72F0257B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167FB8EA-873C-49F8-AF38-8B72F0257B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167FB8EA-873C-49F8-AF38-8B72F0257B5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3AFA737-6CE5-424A-8DFB-48B0A2625E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3AFA737-6CE5-424A-8DFB-48B0A2625E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3AFA737-6CE5-424A-8DFB-48B0A2625E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3AFA737-6CE5-424A-8DFB-48B0A2625E46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E47C3860-153F-4038-8850-B085FE192735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E47C3860-153F-4038-8850-B085FE192735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E47C3860-153F-4038-8850-B085FE192735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E47C3860-153F-4038-8850-B085FE192735}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E684AF4-755D-424A-BD23-B694C885E75A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E684AF4-755D-424A-BD23-B694C885E75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E684AF4-755D-424A-BD23-B694C885E75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E684AF4-755D-424A-BD23-B694C885E75A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9998BE6F-F0E8-43BD-9D1B-A09AA3A05308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9998BE6F-F0E8-43BD-9D1B-A09AA3A05308}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9998BE6F-F0E8-43BD-9D1B-A09AA3A05308}.Release|Any CPU.ActiveCfg = Release|Any CPU
