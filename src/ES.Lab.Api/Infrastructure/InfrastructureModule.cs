@@ -14,7 +14,6 @@ namespace ES.Lab.Api.Infrastructure
             builder
                 .RegisterAssemblyTypes(System.Reflection.Assembly.GetAssembly(typeof (IProjectionContext)))
                 .Except<InMemoryProjectionContext>()
-                //.Except<BroadcastingEventListener>()
                 .Except<ProjectionContext>()
                 .AsImplementedInterfaces();
 

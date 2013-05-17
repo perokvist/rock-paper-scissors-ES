@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using ES.Lab.Read;
 
