@@ -8,6 +8,7 @@ namespace ES.Lab.Api.Infrastructure
         protected override void Load(Autofac.ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly())
+                .Where(t => !t.FullName.Contains(".HelpPage"))
              .Except<GenericRoleProvider>()
              .Except<GenericAuthenticationService>()
              .AsImplementedInterfaces();

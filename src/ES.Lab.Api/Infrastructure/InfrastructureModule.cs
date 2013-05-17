@@ -2,7 +2,6 @@
 using Autofac;
 using Autofac.Integration.WebApi;
 using ES.Lab.Infrastructure.Data;
-using ES.Lab.Infrastructure.Signaling;
 using Treefort.Events;
 
 namespace ES.Lab.Api.Infrastructure

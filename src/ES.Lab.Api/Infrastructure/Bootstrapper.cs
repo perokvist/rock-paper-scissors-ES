@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
+using ES.Lab.Api.Areas.HelpPage;
 using ES.Lab.Domain;
 using Microsoft.AspNet.SignalR;
 using Treefort.Commanding;

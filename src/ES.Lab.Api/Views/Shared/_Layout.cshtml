@@ -13,7 +13,7 @@
         <div class="content-wrapper">
             <div class="float-left">
                 <p class="site-title">
-                    <a href="~/">ASP.NET Web API</a></p>
+                    <a href="~/">Rock Paper Scissor</a></p>
             </div>
             <div class="float-right">
                 <nav>
@@ -26,44 +26,7 @@
         </div>
     </header>
     @RenderBody()
-    
-    <button id="createGame" title="CreateGame">CreateGame</button>
-
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
-    <script src="/Scripts/toastr.min.js" type="text/javascript"></script>
-    <script src="/Scripts/jquery.signalR-1.1.0.min.js" type="text/javascript"></script>
-    <script src="~/signalr/hubs" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(function () {
-
-            //Toastr config
-            toastr.options = { positionClass: 'toast-bottom-right' };
-
-            // Proxy created on the fly          
-            var bhub = $.connection.broadcastHub;
-
-            // Declare a function on the chat hub so the server can invoke it          
-            bhub.client.something = function (e) {
-                toastr.info(e.Title);
-            };
-
-            // Start the connection
-            $.connection.hub.start().done(function () {
-                var clientId = $.connection.hub.id;
-                $('#createGame').click(function() {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/api/game',
-                        data: { "name": "webgame1", "firstTo": "3", "clientId": clientId },
-                        dataType: 'json',
-                        success: function (data) {
-                            console.log(data.username);
-                        },
-                    });
-                });
-            });
-        });
-</script>
 </body>
 </html>

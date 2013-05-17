@@ -33,6 +33,11 @@ namespace ES.Lab.Api.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Creates a new game.
+        /// </summary>
+        /// <param name="input">{ "name": "webgame1", "firstTo": "3", "clientId": clientId }</param>
+        /// <returns>HttpStatusCode.Created with the new location</returns>
         [HttpPost]
         public async Task<HttpResponseMessage> CreateGame(JObject input)
         {
