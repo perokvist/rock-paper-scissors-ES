@@ -30,10 +30,7 @@ namespace ES.Lab.Api.Infrastructure
             {
                 ctx.Database.Initialize(false);
             }
-            using (var ctx = new ProjectionContext())
-            {
-                ctx.Database.Initialize(false);
-            }
+            
         }
     }
 }

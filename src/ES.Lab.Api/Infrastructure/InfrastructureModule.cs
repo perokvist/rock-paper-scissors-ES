@@ -21,7 +21,11 @@ namespace ES.Lab.Api.Infrastructure
             builder.RegisterType<ProjectionContext>()
                 .AsImplementedInterfaces()
                 .InstancePerApiRequest();
-
+            
+            using (var ctx = new ProjectionContext())
+            {
+                ctx.Database.Initialize(false);
+            }
         }
     }
 }
