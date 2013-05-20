@@ -3,6 +3,7 @@ using Autofac.Integration.WebApi;
 using ES.Lab.Api.Areas.HelpPage;
 using ES.Lab.Domain;
 using Microsoft.AspNet.SignalR;
+using System.Data.Entity;
 using Treefort.Commanding;
 using Treefort.Infrastructure;
 using Treefort.WebApi.Security;

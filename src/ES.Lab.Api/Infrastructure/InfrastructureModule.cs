@@ -18,7 +18,9 @@ namespace ES.Lab.Api.Infrastructure
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProjectionContext, Lab.Infrastructure.ProjectionMigrations.Configuration>());
             //TODO DbConfiguration.SetConfiguration for multitenant
-            builder.RegisterType<ProjectionContext>().AsImplementedInterfaces().InstancePerApiRequest();
+            builder.RegisterType<ProjectionContext>()
+                .AsImplementedInterfaces()
+                .InstancePerApiRequest();
 
         }
     }

@@ -19,10 +19,21 @@ namespace ES.Lab.Api.Infrastructure
             
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EventContext, EventConfiguration>());
             //TODO DbConfiguration.SetConfiguration for multitenant
-            builder.RegisterType<EventContext>().AsImplementedInterfaces().InstancePerApiRequest();
+            builder.RegisterType<EventContext>()
+                .AsImplementedInterfaces()
+                .InstancePerApiRequest();
 
             builder.RegisterType<EventStore>()
                 .Named<IEventStore>("implementor");
+
+            using (var ctx = new EventContext())
+            {
+                ctx.Database.Initialize(false);
+            }
+            using (var ctx = new ProjectionContext())
+            {
+                ctx.Database.Initialize(false);
+            }
         }
     }
 }
